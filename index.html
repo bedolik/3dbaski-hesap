@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08101a">
+  <title>3D Baskı Fiyat Hesaplayıcı</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, sans-serif;
+      background: #050b10;
+      color: #eef3fa;
+      --panel: rgba(12, 20, 28, 0.95);
+      --panel-strong: #0a1724;
+      --accent: #60c3ff;
+      --accent-strong: #4aa5dd;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 24px 80px rgba(0,0,0,0.24);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, rgba(96,195,255,0.12), transparent 30%), linear-gradient(180deg, #06111b 0%, #02070c 100%); }
+    header { padding: 22px 18px 8px; text-align: center; }
+    header h1 { margin: 0; font-size: 1.75rem; letter-spacing: -0.03em; }
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px 18px; }
+    .tab { border: 1px solid var(--border); background: var(--panel); color: inherit; padding: 14px 16px; border-radius: 16px; text-align: center; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .tab.active { background: linear-gradient(180deg, rgba(96,195,255,0.18), rgba(11,25,38,0.98)); border-color: rgba(96,195,255,0.32); }
+    .tab:hover { transform: translateY(-1px); }
+    main { padding: 0 18px 24px; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); padding: 18px; backdrop-filter: blur(12px); }
+    .panel + .panel { margin-top: 18px; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; font-size: 1rem; font-weight: 700; }
+    .hint { color: #9bb2cf; font-size: 0.92rem; margin-top: 2px; }
+    .grid { display: grid; gap: 16px; }
+    .field { display: grid; gap: 8px; }
+    label { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; font-weight: 600; }
+    input, select { width: 100%; border: 1px solid var(--border); border-radius: 16px; background: rgba(8,16,24,0.92); color: inherit; padding: 16px 14px; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(96,195,255,0.16); }
+    .row { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .row.sm { grid-template-columns: 1fr 1fr; }
+    .row.auto { grid-template-columns: auto 1fr; align-items: center; }
+    .result-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .result-item { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
+    .result-item span { color: #b8ccdf; }
+    .summary { margin-top: 20px; padding: 20px; border-radius: 24px; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.08); }
+    .summary h2 { margin: 0 0 16px; font-size: 1.12rem; letter-spacing: -0.02em; }
+    .summary-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 12px; }
+    .summary-row strong { font-size: 1rem; }
+    .summary-total { display: grid; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .big { font-size: clamp(1.5rem, 2.25vw, 2rem); font-weight: 800; letter-spacing: -0.03em; }
+    .profit { color: #7bf2a8; }
+    .negative { color: #ff8b8b; }
+    .small { font-size: 0.88rem; color: #9bb2cf; }
+    .button-row { display: grid; gap: 12px; grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .button { border: 1px solid var(--border); background: rgba(96,195,255,0.12); color: inherit; padding: 14px 16px; border-radius: 16px; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+    .button:hover { transform: translateY(-1px); background: rgba(96,195,255,0.2); }
+    .footnote { margin-top: 12px; color: #8aa2c1; font-size: 0.88rem; line-height: 1.5; }
+    @media (max-width: 520px) {
+      .tabs { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .button-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>3D Baskı Fiyat Hesaplayıcı</h1>
+    <p class="hint">Filament, süre ve ayarlara göre anlık maliyet ve satış fiyatı hesaplanır.</p>
+  </header>
+  <div class="tabs">
+    <button id="tabCalculator" class="tab active" type="button">Hesaplayıcı</button>
+    <button id="tabSettings" class="tab" type="button">Ayarlar</button>
+  </div>
+  <main>
+    <section id="calculatorPanel" class="panel">
+      <div class="section-title"><span>Girdiler</span></div>
+      <div class="grid">
+        <div class="field">
+          <label for="filamentProfile">Filament profili</label>
+          <select id="filamentProfile"></select>
+        </div>
+        <div class="field">
+          <label for="filamentWeight">Filament kullanımı (gram)</label>
+          <input id="filamentWeight" type="number" min="0" step="1" value="50" inputmode="numeric">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="printHours">Baskı süresi - Saat</label>
+            <input id="printHours" type="number" min="0" step="1" value="1" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="printMinutes">Baskı süresi - Dakika</label>
+            <input id="printMinutes" type="number" min="0" max="59" step="1" value="0" inputmode="numeric">
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="resultsPanel" class="panel">
+      <div class="section-title"><span>Sonuçlar</span></div>
+      <ul class="result-list">
+        <li class="result-item"><span>Filament maliyeti</span><strong id="costFilament">0,00 TL</strong></li>
+        <li class="result-item"><span>Elektrik maliyeti</span><strong id="costElectricity">0,00 TL</strong></li>
+        <li class="result-item"><span>Amortisman</span><strong id="costAmortization">0,00 TL</strong></li>
+        <li class="result-item"><span>İşçilik / hazırlık</span><strong id="costLabor">0,00 TL</strong></li>
+      </ul>
+      <div class="summary">
+        <h2>Toplam & Satış</h2>
+        <div class="summary-row"><span>Toplam maliyet</span><strong id="totalCost" class="big">0,00 TL</strong></div>
+        <div class="summary-row"><span>Önerilen satış fiyatı</span><strong id="salePrice" class="big">0,00 TL</strong></div>
+        <div class="summary-row"><span>Kâr miktarı</span><strong id="profitAmount" class="profit">0,00 TL</strong></div>
+        <div class="summary-row"><span>Kâr oranı</span><strong id="profitPercent" class="profit">0,00 %</strong></div>
+        <p class="small">Sonuçlar 2 ondalıkla gösterilir. Satış fiyatı 5 TL'ye en yakın tam sayıya yuvarlanır.</p>
+      </div>
+    </section>
+    <section id="settingsPanel" class="panel" hidden>
+      <div class="section-title"><span>Ayarlar</span></div>
+      <div class="grid">
+        <div class="field">
+          <label for="printerPower">Yazıcı gücü (kW)</label>
+          <input id="printerPower" type="number" min="0" step="0.01" value="0.15" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="electricityPrice">Elektrik fiyatı (TL/kWh)</label>
+          <input id="electricityPrice" type="number" min="0" step="0.01" value="2.5" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="amortizationRate">Saatlik amortisman (TL)</label>
+          <input id="amortizationRate" type="number" min="0" step="0.5" value="10" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="laborFee">Baskı başı hazırlık / işçilik (TL)</label>
+          <input id="laborFee" type="number" min="0" step="0.5" value="30" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="profitMultiplier">Kâr çarpanı</label>
+          <input id="profitMultiplier" type="number" min="1" step="0.1" value="2.5" inputmode="decimal">
+        </div>
+      </div>
+      <div class="panel" style="margin-top:18px;">
+        <div class="section-title"><span>Filament profilleri</span></div>
+        <div class="grid" id="profileList"></div>
+        <div class="row" style="margin-top:12px;">
+          <input id="newProfileName" type="text" placeholder="Profil adı (ör. PLA)" aria-label="Profil adı">
+          <input id="newProfilePrice" type="number" min="0" step="0.1" placeholder="TL/kg" aria-label="TL/kg">
+        </div>
+        <div class="button-row" style="margin-top:10px;">
+          <button id="addProfile" class="button" type="button">Profil Ekle</button>
+          <button id="resetDefaults" class="button" type="button">Varsayılanları Yükle</button>
+        </div>
+      </div>
+    </section>
+    <p class="footnote">Uygulama çevrimdışı çalışır ve ana ekrana eklendiğinde PWA modu aktif olur.</p>
+  </main>
+  <script>
+    const defaults = {
+      profiles: [{ name: 'PLA', price: 500 }],
+      printerPower: 0.15,
+      electricityPrice: 2.5,
+      amortizationRate: 10,
+      laborFee: 30,
+      profitMultiplier: 2.5
+    };
+    const storageKey = '3dPrintCalculatorSettings';
+    const elements = {
+      calculatorPanel: document.getElementById('calculatorPanel'),
+      settingsPanel: document.getElementById('settingsPanel'),
+      tabCalculator: document.getElementById('tabCalculator'),
+      tabSettings: document.getElementById('tabSettings'),
+      filamentProfile: document.getElementById('filamentProfile'),
+      filamentWeight: document.getElementById('filamentWeight'),
+      printHours: document.getElementById('printHours'),
+      printMinutes: document.getElementById('printMinutes'),
+      printerPower: document.getElementById('printerPower'),
+      electricityPrice: document.getElementById('electricityPrice'),
+      amortizationRate: document.getElementById('amortizationRate'),
+      laborFee: document.getElementById('laborFee'),
+      profitMultiplier: document.getElementById('profitMultiplier'),
+      profileList: document.getElementById('profileList'),
+      newProfileName: document.getElementById('newProfileName'),
+      newProfilePrice: document.getElementById('newProfilePrice'),
+      addProfile: document.getElementById('addProfile'),
+      resetDefaults: document.getElementById('resetDefaults'),
+      costFilament: document.getElementById('costFilament'),
+      costElectricity: document.getElementById('costElectricity'),
+      costAmortization: document.getElementById('costAmortization'),
+      costLabor: document.getElementById('costLabor'),
+      totalCost: document.getElementById('totalCost'),
+      salePrice: document.getElementById('salePrice'),
+      profitAmount: document.getElementById('profitAmount'),
+      profitPercent: document.getElementById('profitPercent')
+    };
+    let settings = { ...defaults };
+    function loadSettings() {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          settings = { ...defaults, ...parsed };
+          if (!Array.isArray(settings.profiles) || settings.profiles.length === 0) {
+            settings.profiles = defaults.profiles.slice();
+          }
+        }
+      } catch (error) {
+        settings = { ...defaults };
+      }
+    }
+    function saveSettings() {
+      localStorage.setItem(storageKey, JSON.stringify(settings));
+    }
+    function numberFormat(value) {
+      return value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function updateProfileOptions() {
+      elements.filamentProfile.innerHTML = '';
+      settings.profiles.forEach((profile, index) => {
+        const option = document.createElement('option');
+        option.value = String(index);
+        option.textContent = `${profile.name} – ${numberFormat(profile.price)} TL/kg`;
+        elements.filamentProfile.appendChild(option);
+      });
+    }
+    function renderProfileList() {
+      elements.profileList.innerHTML = '';
+      settings.profiles.forEach((profile, index) => {
+        const card = document.createElement('div');
+        card.className = 'result-item';
+        card.innerHTML = `<div><strong>${profile.name}</strong><div class="small">${numberFormat(profile.price)} TL/kg</div></div><button data-index="${index}" style="border:none;background:rgba(255,255,255,0.05);color:#f96666;padding:10px 14px;border-radius:14px;cursor:pointer;min-width:72px;">Sil</button>`;
+        const button = card.querySelector('button');
+        button.addEventListener('click', () => {
+          settings.profiles.splice(index, 1);
+          if (settings.profiles.length === 0) {
+            settings.profiles = defaults.profiles.slice();
+          }
+          saveSettings();
+          updateProfileOptions();
+          renderProfileList();
+          calculate();
+        });
+        elements.profileList.appendChild(card);
+      });
+    }
+    function calculate() {
+      const profile = settings.profiles[Math.max(0, Math.min(settings.profiles.length - 1, Number(elements.filamentProfile.value)))];
+      const filamentWeight = Math.max(0, Number(elements.filamentWeight.value) || 0);
+      const hours = Math.max(0, Number(elements.printHours.value) || 0);
+      const minutes = Math.max(0, Number(elements.printMinutes.value) || 0);
+      const totalHours = hours + minutes / 60;
+      const filamentCost = filamentWeight * (profile.price / 1000);
+      const electricityCost = totalHours * settings.printerPower * settings.electricityPrice;
+      const amortizationCost = totalHours * settings.amortizationRate;
+      const laborCost = settings.laborFee;
+      const totalCost = filamentCost + electricityCost + amortizationCost + laborCost;
+      const salePrice = Math.max(0, Math.round(totalCost * settings.profitMultiplier / 5) * 5);
+      const profit = salePrice - totalCost;
+      const profitPercent = totalCost > 0 ? (profit / totalCost) * 100 : 0;
+      elements.costFilament.textContent = `${numberFormat(filamentCost)} TL`;
+      elements.costElectricity.textContent = `${numberFormat(electricityCost)} TL`;
+      elements.costAmortization.textContent = `${numberFormat(amortizationCost)} TL`;
+      elements.costLabor.textContent = `${numberFormat(laborCost)} TL`;
+      elements.totalCost.textContent = `${numberFormat(totalCost)} TL`;
+      elements.salePrice.textContent = `${numberFormat(salePrice)} TL`;
+      elements.profitAmount.textContent = `${numberFormat(profit)} TL`;
+      elements.profitPercent.textContent = `${numberFormat(profitPercent)} %`;
+    }
+    function applySettingsToInputs() {
+      elements.printerPower.value = settings.printerPower;
+      elements.electricityPrice.value = settings.electricityPrice;
+      elements.amortizationRate.value = settings.amortizationRate;
+      elements.laborFee.value = settings.laborFee;
+      elements.profitMultiplier.value = settings.profitMultiplier;
+    }
+    function initTabs() {
+      elements.tabCalculator.addEventListener('click', () => {
+        elements.tabCalculator.classList.add('active');
+        elements.tabSettings.classList.remove('active');
+        elements.calculatorPanel.hidden = false;
+        elements.settingsPanel.hidden = true;
+      });
+      elements.tabSettings.addEventListener('click', () => {
+        elements.tabCalculator.classList.remove('active');
+        elements.tabSettings.classList.add('active');
+        elements.calculatorPanel.hidden = true;
+        elements.settingsPanel.hidden = false;
+      });
+    }
+    function attachInputListeners() {
+      const inputIds = ['filamentWeight', 'printHours', 'printMinutes'];
+      inputIds.forEach(id => {
+        document.getElementById(id).addEventListener('input', calculate);
+      });
+      elements.filamentProfile.addEventListener('change', calculate);
+      ['printerPower', 'electricityPrice', 'amortizationRate', 'laborFee', 'profitMultiplier'].forEach(id => {
+        document.getElementById(id).addEventListener('input', (event) => {
+          const field = event.target;
+          settings[id] = Number(field.value) || 0;
+          saveSettings();
+          calculate();
+        });
+      });
+      elements.addProfile.addEventListener('click', () => {
+        const name = elements.newProfileName.value.trim() || 'Yeni Profil';
+        const price = Number(elements.newProfilePrice.value);
+        if (!price || price <= 0) {
+          elements.newProfilePrice.focus();
+          return;
+        }
+        settings.profiles.push({ name, price });
+        elements.newProfileName.value = '';
+        elements.newProfilePrice.value = '';
+        saveSettings();
+        updateProfileOptions();
+        renderProfileList();
+        calculate();
+      });
+      elements.resetDefaults.addEventListener('click', () => {
+        settings = { ...defaults, profiles: defaults.profiles.slice() };
+        saveSettings();
+        updateProfileOptions();
+        renderProfileList();
+        applySettingsToInputs();
+        calculate();
+      });
+    }
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {
+          // ignore if registration fails
+        });
+      }
+    }
+    loadSettings();
+    updateProfileOptions();
+    renderProfileList();
+    applySettingsToInputs();
+    initTabs();
+    attachInputListeners();
+    calculate();
+    registerServiceWorker();
+  </script>
+</body>
+</html>
