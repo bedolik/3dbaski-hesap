@@ -12,54 +12,62 @@
       font-family: Inter, system-ui, sans-serif;
       background: #050b10;
       color: #eef3fa;
-      --panel: rgba(12, 20, 28, 0.95);
-      --panel-strong: #0a1724;
+      --panel: rgba(7, 12, 18, 0.92);
+      --panel-strong: rgba(10, 16, 23, 0.96);
       --accent: #60c3ff;
-      --accent-strong: #4aa5dd;
       --border: rgba(255,255,255,0.08);
-      --shadow: 0 24px 80px rgba(0,0,0,0.24);
+      --muted: #9bb2cf;
+      --surface: rgba(255,255,255,0.04);
     }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, rgba(96,195,255,0.12), transparent 30%), linear-gradient(180deg, #06111b 0%, #02070c 100%); }
-    header { padding: 22px 18px 8px; text-align: center; }
-    header h1 { margin: 0; font-size: 1.75rem; letter-spacing: -0.03em; }
-    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px 18px; }
-    .tab { border: 1px solid var(--border); background: var(--panel); color: inherit; padding: 14px 16px; border-radius: 16px; text-align: center; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.2s; }
-    .tab.active { background: linear-gradient(180deg, rgba(96,195,255,0.18), rgba(11,25,38,0.98)); border-color: rgba(96,195,255,0.32); }
+    html, body { min-height: 100%; }
+    body { margin: 0; background: radial-gradient(circle at top, rgba(96,195,255,0.12), transparent 24%), linear-gradient(180deg, #040810 0%, #02060a 100%); }
+    header { padding: 24px 20px 12px; text-align: center; }
+    header h1 { margin: 0; font-size: 1.8rem; letter-spacing: -0.03em; }
+    .hint { margin: 12px 0 0; color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+    main { padding: 0 20px 110px; }
+    .tabs { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 16px 18px; background: rgba(5,11,17,0.96); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.08); }
+    .tab { border: 1px solid transparent; background: rgba(255,255,255,0.04); color: inherit; padding: 14px 16px; border-radius: 18px; text-align: center; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.2s, border-color 0.2s; }
+    .tab.active { background: rgba(96,195,255,0.18); border-color: rgba(96,195,255,0.28); }
     .tab:hover { transform: translateY(-1px); }
-    main { padding: 0 18px 24px; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); padding: 18px; backdrop-filter: blur(12px); }
-    .panel + .panel { margin-top: 18px; }
-    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; font-size: 1rem; font-weight: 700; }
-    .hint { color: #9bb2cf; font-size: 0.92rem; margin-top: 2px; }
-    .grid { display: grid; gap: 16px; }
-    .field { display: grid; gap: 8px; }
-    label { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; font-weight: 600; }
-    input, select { width: 100%; border: 1px solid var(--border); border-radius: 16px; background: rgba(8,16,24,0.92); color: inherit; padding: 16px 14px; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(96,195,255,0.16); }
-    .row { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .row.sm { grid-template-columns: 1fr 1fr; }
-    .row.auto { grid-template-columns: auto 1fr; align-items: center; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 24px; padding: 20px; backdrop-filter: blur(12px); }
+    .panel + .panel { margin-top: 20px; }
+    .section-title { font-size: 1rem; font-weight: 700; margin-bottom: 18px; }
+    .grid { display: grid; gap: 18px; }
+    .field { display: grid; gap: 10px; }
+    .field-label-row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+    label { font-size: 0.95rem; font-weight: 700; color: #f3f7fb; }
+    .value-label { font-size: 1.05rem; color: var(--muted); }
+    input, select { width: 100%; border: 1px solid var(--border); border-radius: 18px; background: rgba(255,255,255,0.05); color: inherit; padding: 16px 14px; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(96,195,255,0.14); }
+    input[type='number'] { font-size: 1rem; }
+    input[type='range'] { width: 100%; accent-color: var(--accent); height: 26px; background: rgba(255,255,255,0.08); border-radius: 999px; }
+    input[type='range']::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); border: 3px solid rgba(7, 12, 18, 0.96); box-shadow: 0 0 0 4px rgba(96,195,255,0.14); }
+    input[type='range']::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); border: 3px solid rgba(7, 12, 18, 0.96); }
+    .large-input { font-size: 1.5rem; font-weight: 700; padding: 16px 14px; letter-spacing: -0.02em; }
+    .price-cards { display: grid; gap: 14px; }
+    .price-card { border-radius: 22px; padding: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .price-card.highlight { background: rgba(96,195,255,0.16); border-color: rgba(96,195,255,0.24); }
+    .card-title { font-size: 0.95rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .card-value { margin-top: 14px; font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; letter-spacing: -0.04em; }
+    .card-subtitle { margin-top: 10px; color: var(--muted); font-size: 0.95rem; }
+    .card-meta { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; color: #b5d5ff; font-size: 0.95rem; }
+    .cost-breakdown { margin-top: 18px; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; background: rgba(255,255,255,0.03); }
+    .cost-breakdown summary { list-style: none; font-weight: 700; padding: 16px 20px; cursor: pointer; color: inherit; }
+    .cost-breakdown[open] summary { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .cost-breakdown ul { padding: 0 20px 18px; margin: 0; display: grid; gap: 10px; }
     .result-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-    .result-item { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
-    .result-item span { color: #b8ccdf; }
-    .summary { margin-top: 20px; padding: 20px; border-radius: 24px; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.08); }
-    .summary h2 { margin: 0 0 16px; font-size: 1.12rem; letter-spacing: -0.02em; }
-    .summary-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 12px; }
-    .summary-row strong { font-size: 1rem; }
-    .summary-total { display: grid; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
-    .big { font-size: clamp(1.5rem, 2.25vw, 2rem); font-weight: 800; letter-spacing: -0.03em; }
-    .profit { color: #7bf2a8; }
-    .negative { color: #ff8b8b; }
-    .small { font-size: 0.88rem; color: #9bb2cf; }
+    .result-item { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .result-item span { color: var(--muted); }
     .button-row { display: grid; gap: 12px; grid-template-columns: repeat(2,minmax(0,1fr)); }
-    .button { border: 1px solid var(--border); background: rgba(96,195,255,0.12); color: inherit; padding: 14px 16px; border-radius: 16px; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; }
-    .button:hover { transform: translateY(-1px); background: rgba(96,195,255,0.2); }
-    .footnote { margin-top: 12px; color: #8aa2c1; font-size: 0.88rem; line-height: 1.5; }
+    .button { border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.05); color: inherit; padding: 14px 16px; border-radius: 18px; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+    .button:hover { transform: translateY(-1px); background: rgba(96,195,255,0.15); }
+    .footnote { margin-top: 12px; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
     @media (max-width: 520px) {
-      .tabs { grid-template-columns: 1fr; }
-      .row { grid-template-columns: 1fr; }
+      .tabs { grid-template-columns: 1fr 1fr; }
+      .field { gap: 12px; }
       .button-row { grid-template-columns: 1fr; }
+      .price-cards { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -81,37 +89,40 @@
           <select id="filamentProfile"></select>
         </div>
         <div class="field">
-          <label for="filamentWeight">Filament kullanımı (gram)</label>
-          <input id="filamentWeight" type="number" min="0" step="1" value="50" inputmode="numeric">
+          <div class="field-label-row">
+            <label for="filamentWeight">Filament kullanımı</label>
+            <span id="filamentWeightLabel" class="value-label">50 g</span>
+          </div>
+          <input id="filamentWeight" type="range" min="0" max="1000" step="5" value="50">
+          <input id="filamentWeightInput" class="large-input" type="number" min="0" step="5" value="50" inputmode="numeric">
         </div>
-        <div class="row">
-          <div class="field">
-            <label for="printHours">Baskı süresi - Saat</label>
-            <input id="printHours" type="number" min="0" step="1" value="1" inputmode="numeric">
+        <div class="field">
+          <div class="field-label-row">
+            <label for="printHours">Baskı süresi</label>
+            <span id="printHoursLabel" class="value-label">1,0 saat</span>
           </div>
-          <div class="field">
-            <label for="printMinutes">Baskı süresi - Dakika</label>
-            <input id="printMinutes" type="number" min="0" max="59" step="1" value="0" inputmode="numeric">
-          </div>
+          <input id="printHours" type="range" min="0" max="72" step="0.5" value="1">
+          <input id="printHoursInput" class="large-input" type="number" min="0" step="0.1" value="1" inputmode="decimal">
         </div>
       </div>
     </section>
     <section id="resultsPanel" class="panel">
       <div class="section-title"><span>Sonuçlar</span></div>
-      <ul class="result-list">
-        <li class="result-item"><span>Filament maliyeti</span><strong id="costFilament">0,00 TL</strong></li>
-        <li class="result-item"><span>Elektrik maliyeti</span><strong id="costElectricity">0,00 TL</strong></li>
-        <li class="result-item"><span>Amortisman</span><strong id="costAmortization">0,00 TL</strong></li>
-        <li class="result-item"><span>İşçilik / hazırlık</span><strong id="costLabor">0,00 TL</strong></li>
-      </ul>
-      <div class="summary">
-        <h2>Toplam & Satış</h2>
-        <div class="summary-row"><span>Toplam maliyet</span><strong id="totalCost" class="big">0,00 TL</strong></div>
-        <div class="summary-row"><span>Önerilen satış fiyatı</span><strong id="salePrice" class="big">0,00 TL</strong></div>
-        <div class="summary-row"><span>Kâr miktarı</span><strong id="profitAmount" class="profit">0,00 TL</strong></div>
-        <div class="summary-row"><span>Kâr oranı</span><strong id="profitPercent" class="profit">0,00 %</strong></div>
-        <p class="small">Sonuçlar 2 ondalıkla gösterilir. Satış fiyatı 5 TL'ye en yakın tam sayıya yuvarlanır.</p>
+      <div class="price-cards">
+        <div class="price-card"><div class="card-title">Maliyet</div><div id="costCardValue" class="card-value">0,00 TL</div><div class="card-subtitle">Kâr yok</div></div>
+        <div class="price-card"><div class="card-title">Öğrenci Paketi</div><div id="studentCardValue" class="card-value">0,00 TL</div><div class="card-meta"><span id="studentDiscountMeta">Normal kârın yarısı</span><span id="studentProfitMeta">Kâr: 0,00 TL (%0)</span></div></div>
+        <div class="price-card highlight"><div class="card-title">Normal Fiyat</div><div id="normalCardValue" class="card-value">0,00 TL</div><div class="card-meta"><span id="normalProfitMeta">Kâr: 0,00 TL (%0)</span></div></div>
       </div>
+      <details class="cost-breakdown" open>
+        <summary>Maliyet kalemleri</summary>
+        <ul class="result-list">
+          <li class="result-item"><span>Filament maliyeti</span><strong id="costFilament">0,00 TL</strong></li>
+          <li class="result-item"><span>Elektrik maliyeti</span><strong id="costElectricity">0,00 TL</strong></li>
+          <li class="result-item"><span>Amortisman</span><strong id="costAmortization">0,00 TL</strong></li>
+          <li class="result-item"><span>İşçilik / hazırlık</span><strong id="costLabor">0,00 TL</strong></li>
+        </ul>
+      </details>
+      <p class="footnote">Tüm fiyatlar 10 TL'ye yuvarlanır. Öğrenci paketi maliyetten düşükse maliyete eşitlenir.</p>
     </section>
     <section id="settingsPanel" class="panel" hidden>
       <div class="section-title"><span>Ayarlar</span></div>
@@ -125,8 +136,8 @@
           <input id="electricityPrice" type="number" min="0" step="0.01" value="2.5" inputmode="decimal">
         </div>
         <div class="field">
-          <label for="amortizationRate">Saatlik amortisman (TL)</label>
-          <input id="amortizationRate" type="number" min="0" step="0.5" value="10" inputmode="decimal">
+          <label for="amortizationRate">Makine saat ücreti (TL/saat)</label>
+          <input id="amortizationRate" type="number" min="0" step="0.5" value="30" inputmode="decimal">
         </div>
         <div class="field">
           <label for="laborFee">Baskı başı hazırlık / işçilik (TL)</label>
@@ -146,7 +157,7 @@
         </div>
         <div class="button-row" style="margin-top:10px;">
           <button id="addProfile" class="button" type="button">Profil Ekle</button>
-          <button id="resetDefaults" class="button" type="button">Varsayılanları Yükle</button>
+          <button id="resetDefaults" class="button" type="button">Varsayılanlara sıfırla</button>
         </div>
       </div>
     </section>
@@ -157,9 +168,11 @@
       profiles: [{ name: 'PLA', price: 500 }],
       printerPower: 0.15,
       electricityPrice: 2.5,
-      amortizationRate: 10,
+      amortizationRate: 30,
       laborFee: 30,
-      profitMultiplier: 2.5
+      profitMultiplier: 2.5,
+      filamentWeight: 50,
+      printHours: 1
     };
     const storageKey = '3dPrintCalculatorSettings';
     const elements = {
@@ -169,8 +182,11 @@
       tabSettings: document.getElementById('tabSettings'),
       filamentProfile: document.getElementById('filamentProfile'),
       filamentWeight: document.getElementById('filamentWeight'),
+      filamentWeightInput: document.getElementById('filamentWeightInput'),
+      filamentWeightLabel: document.getElementById('filamentWeightLabel'),
       printHours: document.getElementById('printHours'),
-      printMinutes: document.getElementById('printMinutes'),
+      printHoursInput: document.getElementById('printHoursInput'),
+      printHoursLabel: document.getElementById('printHoursLabel'),
       printerPower: document.getElementById('printerPower'),
       electricityPrice: document.getElementById('electricityPrice'),
       amortizationRate: document.getElementById('amortizationRate'),
@@ -185,10 +201,12 @@
       costElectricity: document.getElementById('costElectricity'),
       costAmortization: document.getElementById('costAmortization'),
       costLabor: document.getElementById('costLabor'),
-      totalCost: document.getElementById('totalCost'),
-      salePrice: document.getElementById('salePrice'),
-      profitAmount: document.getElementById('profitAmount'),
-      profitPercent: document.getElementById('profitPercent')
+      costCardValue: document.getElementById('costCardValue'),
+      studentCardValue: document.getElementById('studentCardValue'),
+      normalCardValue: document.getElementById('normalCardValue'),
+      studentDiscountMeta: document.getElementById('studentDiscountMeta'),
+      studentProfitMeta: document.getElementById('studentProfitMeta'),
+      normalProfitMeta: document.getElementById('normalProfitMeta')
     };
     let settings = { ...defaults };
     function loadSettings() {
@@ -240,28 +258,49 @@
         elements.profileList.appendChild(card);
       });
     }
+    function formatTL(value) {
+      return `${numberFormat(value)} TL`;
+    }
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+    function updateSliderLabel(value, labelElement, unit) {
+      labelElement.textContent = unit === 'g' ? `${Math.round(value)} g` : `${value.toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} saat`;
+    }
     function calculate() {
       const profile = settings.profiles[Math.max(0, Math.min(settings.profiles.length - 1, Number(elements.filamentProfile.value)))];
-      const filamentWeight = Math.max(0, Number(elements.filamentWeight.value) || 0);
-      const hours = Math.max(0, Number(elements.printHours.value) || 0);
-      const minutes = Math.max(0, Number(elements.printMinutes.value) || 0);
-      const totalHours = hours + minutes / 60;
+      const filamentWeight = Math.max(0, Number(elements.filamentWeightInput.value) || 0);
+      const totalHours = Math.max(0, Number(elements.printHoursInput.value) || 0);
       const filamentCost = filamentWeight * (profile.price / 1000);
       const electricityCost = totalHours * settings.printerPower * settings.electricityPrice;
       const amortizationCost = totalHours * settings.amortizationRate;
       const laborCost = settings.laborFee;
       const totalCost = filamentCost + electricityCost + amortizationCost + laborCost;
-      const salePrice = Math.max(0, Math.round(totalCost * settings.profitMultiplier / 5) * 5);
-      const profit = salePrice - totalCost;
-      const profitPercent = totalCost > 0 ? (profit / totalCost) * 100 : 0;
-      elements.costFilament.textContent = `${numberFormat(filamentCost)} TL`;
-      elements.costElectricity.textContent = `${numberFormat(electricityCost)} TL`;
-      elements.costAmortization.textContent = `${numberFormat(amortizationCost)} TL`;
-      elements.costLabor.textContent = `${numberFormat(laborCost)} TL`;
-      elements.totalCost.textContent = `${numberFormat(totalCost)} TL`;
-      elements.salePrice.textContent = `${numberFormat(salePrice)} TL`;
-      elements.profitAmount.textContent = `${numberFormat(profit)} TL`;
-      elements.profitPercent.textContent = `${numberFormat(profitPercent)} %`;
+      const normalPriceRaw = totalCost * settings.profitMultiplier;
+      const roundedCost = Math.round(totalCost / 10) * 10;
+      const normalPrice = Math.max(0, Math.round(normalPriceRaw / 10) * 10);
+      let studentPriceRaw = totalCost + (normalPriceRaw - totalCost) / 2;
+      if (normalPriceRaw <= totalCost) {
+        studentPriceRaw = totalCost;
+      }
+      let studentPrice = Math.round(studentPriceRaw / 10) * 10;
+      if (normalPriceRaw <= totalCost) {
+        studentPrice = roundedCost;
+      }
+      const studentProfit = studentPrice - totalCost;
+      const studentProfitPercent = totalCost > 0 ? (studentProfit / totalCost) * 100 : 0;
+      const normalProfit = normalPrice - totalCost;
+      const normalProfitPercent = totalCost > 0 ? (normalProfit / totalCost) * 100 : 0;
+      elements.costFilament.textContent = formatTL(filamentCost);
+      elements.costElectricity.textContent = formatTL(electricityCost);
+      elements.costAmortization.textContent = formatTL(amortizationCost);
+      elements.costLabor.textContent = formatTL(laborCost);
+      elements.costCardValue.textContent = formatTL(roundedCost);
+      elements.normalCardValue.textContent = formatTL(normalPrice);
+      elements.studentCardValue.textContent = formatTL(studentPrice);
+      elements.studentDiscountMeta.textContent = 'Normal kârın yarısı';
+      elements.studentProfitMeta.textContent = `Kâr: ${formatTL(studentProfit)} (${numberFormat(studentProfitPercent)} %)`;
+      elements.normalProfitMeta.textContent = `Kâr: ${formatTL(normalProfit)} (${numberFormat(normalProfitPercent)} %)`;
     }
     function applySettingsToInputs() {
       elements.printerPower.value = settings.printerPower;
@@ -269,6 +308,12 @@
       elements.amortizationRate.value = settings.amortizationRate;
       elements.laborFee.value = settings.laborFee;
       elements.profitMultiplier.value = settings.profitMultiplier;
+      elements.filamentWeight.value = settings.filamentWeight;
+      elements.filamentWeightInput.value = settings.filamentWeight;
+      updateSliderLabel(settings.filamentWeight, elements.filamentWeightLabel, 'g');
+      elements.printHours.value = settings.printHours;
+      elements.printHoursInput.value = settings.printHours;
+      updateSliderLabel(settings.printHours, elements.printHoursLabel, 'h');
     }
     function initTabs() {
       elements.tabCalculator.addEventListener('click', () => {
@@ -285,10 +330,34 @@
       });
     }
     function attachInputListeners() {
-      const inputIds = ['filamentWeight', 'printHours', 'printMinutes'];
-      inputIds.forEach(id => {
-        document.getElementById(id).addEventListener('input', calculate);
-      });
+      const updateRange = (range, input, label, unit) => {
+        range.addEventListener('input', () => {
+          const value = Number(range.value);
+          input.value = value;
+          updateSliderLabel(value, label, unit);
+          calculate();
+        });
+        input.addEventListener('input', () => {
+          const value = Number(input.value) || 0;
+          if (value > Number(range.max)) {
+            range.value = range.max;
+          } else if (value < Number(range.min)) {
+            range.value = range.min;
+          } else {
+            range.value = value;
+          }
+          updateSliderLabel(value, label, unit);
+          calculate();
+        });
+      };
+      elements.filamentWeight.value = settings.filamentWeight;
+      elements.filamentWeightInput.value = settings.filamentWeight;
+      updateSliderLabel(settings.filamentWeight, elements.filamentWeightLabel, 'g');
+      elements.printHours.value = settings.printHours;
+      elements.printHoursInput.value = settings.printHours;
+      updateSliderLabel(settings.printHours, elements.printHoursLabel, 'h');
+      updateRange(elements.filamentWeight, elements.filamentWeightInput, elements.filamentWeightLabel, 'g');
+      updateRange(elements.printHours, elements.printHoursInput, elements.printHoursLabel, 'h');
       elements.filamentProfile.addEventListener('change', calculate);
       ['printerPower', 'electricityPrice', 'amortizationRate', 'laborFee', 'profitMultiplier'].forEach(id => {
         document.getElementById(id).addEventListener('input', (event) => {
@@ -319,6 +388,12 @@
         updateProfileOptions();
         renderProfileList();
         applySettingsToInputs();
+        elements.filamentWeight.value = defaults.filamentWeight || 50;
+        elements.filamentWeightInput.value = defaults.filamentWeight || 50;
+        elements.printHours.value = defaults.printHours || 1;
+        elements.printHoursInput.value = defaults.printHours || 1;
+        updateSliderLabel(Number(elements.filamentWeightInput.value), elements.filamentWeightLabel, 'g');
+        updateSliderLabel(Number(elements.printHoursInput.value), elements.printHoursLabel, 'h');
         calculate();
       });
     }
