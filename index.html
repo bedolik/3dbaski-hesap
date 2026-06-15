@@ -36,7 +36,7 @@
     header h1 { margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
     .hint { margin: 3px 0 0; color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
 
-    main { padding: 4px 18px 130px; max-width: 760px; margin: 0 auto; }
+    main { padding: 4px 18px 84px; max-width: 760px; margin: 0 auto; }
     .view[hidden] { display: none !important; }
 
     /* Selamlama */
@@ -133,12 +133,13 @@
     .calc-breakdown li { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.92rem; }
     .calc-breakdown li strong { color: var(--text); }
 
-    /* Alt sekme barı — yüzen */
-    .tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; width: calc(100% - 32px); max-width: 480px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px; background: rgba(255,255,255,0.96); backdrop-filter: blur(14px); border-radius: 26px; box-shadow: var(--shadow-lg); z-index: 30; }
-    .tab { border: none; background: transparent; color: var(--muted); padding: 11px 6px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 700; font-size: 0.72rem; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.15s; }
-    .tab-ico { font-size: 1.2rem; line-height: 1; }
-    .tab:hover { transform: translateY(-1px); }
-    .tab.active { background: var(--dark); color: #fff; }
+    /* Alt sekme barı — mobil: alta yapışık, tam genişlik, 5 eşit sekme */
+    .tabs { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; padding: 6px 2px calc(6px + env(safe-area-inset-bottom)); background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); border-top: 1px solid var(--border); box-shadow: 0 -4px 18px rgba(0,0,0,0.05); z-index: 30; }
+    .tab { border: none; background: transparent; color: var(--muted); padding: 5px 1px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: 700; font-size: 0.62rem; cursor: pointer; transition: color 0.2s; }
+    .tab-ico { font-size: 1.12rem; line-height: 1; }
+    .tab-lbl { white-space: nowrap; }
+    .tab.active { color: var(--coral); }
+    .tab.active .tab-ico { transform: scale(1.05); }
 
     /* Modal — alttan açılan sheet */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(28,28,30,0.35); backdrop-filter: blur(4px); display: flex; align-items: flex-end; justify-content: center; z-index: 50; }
@@ -175,8 +176,11 @@
       .greeting { padding: 6px 4px 10px; }
       .greet-title { font-size: 1.8rem; }
 
-      .tabs { left: 18px; top: 50%; bottom: auto; width: 88px; max-width: none; height: max-content; grid-template-columns: 1fr; gap: 8px; padding: 10px; border-radius: 28px; transform: translateY(-50%); }
-      .tab { padding: 14px 6px; border-radius: 20px; font-size: 0.74rem; }
+      .tabs { left: 18px; right: auto; top: 50%; bottom: auto; width: 88px; max-width: none; height: max-content; grid-template-columns: 1fr; gap: 8px; padding: 10px; border-top: none; border-radius: 28px; box-shadow: var(--shadow-lg); transform: translateY(-50%); }
+      .tab { padding: 14px 6px; border-radius: 20px; font-size: 0.74rem; gap: 4px; }
+      .tab-ico { font-size: 1.2rem; }
+      .tab.active { background: var(--dark); color: #fff; }
+      .tab.active .tab-ico { transform: none; }
       .toast { left: auto; right: 28px; bottom: 28px; transform: none; }
       .toast.show { transform: translateY(-6px); }
 
@@ -364,7 +368,7 @@
 
   <nav class="tabs" id="tabs" hidden>
     <button class="tab active" data-view="summary"><span class="tab-ico">📊</span><span class="tab-lbl">Özet</span></button>
-    <button class="tab" data-view="calc"><span class="tab-ico">🧮</span><span class="tab-lbl">Hesaplayıcı</span></button>
+    <button class="tab" data-view="calc"><span class="tab-ico">🧮</span><span class="tab-lbl">Hesap</span></button>
     <button class="tab" data-view="designs"><span class="tab-ico">🧩</span><span class="tab-lbl">Tasarımlar</span></button>
     <button class="tab" data-view="sales"><span class="tab-ico">🧾</span><span class="tab-lbl">Satışlar</span></button>
     <button class="tab" data-view="settings"><span class="tab-ico">⚙️</span><span class="tab-lbl">Ayarlar</span></button>
