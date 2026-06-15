@@ -1,14 +1,14 @@
 {
-  "name": "3D Baskı Fiyat Hesaplayıcı",
-  "short_name": "3D Hesapla",
-  "description": "Filament, elektrik, amortisman ve işçilik ile 3D baskı maliyetini hesaplar.",
-  "start_url": ".",
+  "name": "3D Baskı İş Paneli",
+  "short_name": "İş Paneli",
+  "description": "3D baskı işini yönet: üretim, satış, kâr ve hızlı fiyat hesabı.",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#08101a",
-  "theme_color": "#08101a",
+  "background_color": "#F4F0E8",
+  "theme_color": "#F4F0E8",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23081a2f'/%3E%3Cpath d='M160 176h192v32H160zm-8 96h208v32H152zm0 96h128v32H152z' fill='%23d3ecff'/%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23F4F0E8'/%3E%3Crect x='128' y='128' width='256' height='256' rx='56' fill='%231C1C1E'/%3E%3Cpath d='M192 224h128v28H192zm0 64h128v28H192z' fill='%23F4F0E8'/%3E%3Ccircle cx='320' cy='196' r='18' fill='%23FF7A65'/%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml"
     }

@@ -3,415 +3,961 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#08101a">
-  <title>3D Baskı Fiyat Hesaplayıcı</title>
+  <meta name="theme-color" content="#F4F0E8">
+  <title>3D Baskı İş Paneli</title>
   <link rel="manifest" href="manifest.json">
   <style>
     :root {
-      color-scheme: dark;
-      font-family: Inter, system-ui, sans-serif;
-      background: #050b10;
-      color: #eef3fa;
-      --panel: rgba(7, 12, 18, 0.92);
-      --panel-strong: rgba(10, 16, 23, 0.96);
-      --accent: #60c3ff;
-      --border: rgba(255,255,255,0.08);
-      --muted: #9bb2cf;
-      --surface: rgba(255,255,255,0.04);
+      color-scheme: light;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --bg: #F4F0E8;
+      --card: #FFFFFF;
+      --yellow: #FBD34D;
+      --coral: #FF7A65;
+      --dark: #1C1C1E;
+      --text: #1A1A1A;
+      --muted: #8A8A8E;
+      --accent: #FF7A65;
+      --border: rgba(0,0,0,0.06);
+      --field: #F2EFE9;
+      --shadow: 0 6px 24px rgba(0,0,0,0.05);
+      --shadow-lg: 0 12px 36px rgba(0,0,0,0.10);
+      --danger: #FF3B30;
+      background: var(--bg);
+      color: var(--text);
     }
     * { box-sizing: border-box; }
     html, body { min-height: 100%; }
-    body { margin: 0; background: radial-gradient(circle at top, rgba(96,195,255,0.12), transparent 24%), linear-gradient(180deg, #040810 0%, #02060a 100%); }
-    header { padding: 24px 20px 12px; text-align: center; }
-    header h1 { margin: 0; font-size: 1.8rem; letter-spacing: -0.03em; }
-    .hint { margin: 12px 0 0; color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
-    main { padding: 0 20px 110px; }
-    .tabs { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 16px 18px; background: rgba(5,11,17,0.96); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.08); }
-    .tab { border: 1px solid transparent; background: rgba(255,255,255,0.04); color: inherit; padding: 14px 16px; border-radius: 18px; text-align: center; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.2s, border-color 0.2s; }
-    .tab.active { background: rgba(96,195,255,0.18); border-color: rgba(96,195,255,0.28); }
-    .tab:hover { transform: translateY(-1px); }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 24px; padding: 20px; backdrop-filter: blur(12px); }
-    .panel + .panel { margin-top: 20px; }
-    .section-title { font-size: 1rem; font-weight: 700; margin-bottom: 18px; }
-    .grid { display: grid; gap: 18px; }
-    .field { display: grid; gap: 10px; }
-    .field-label-row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-    label { font-size: 0.95rem; font-weight: 700; color: #f3f7fb; }
-    .value-label { font-size: 1.05rem; color: var(--muted); }
-    input, select { width: 100%; border: 1px solid var(--border); border-radius: 18px; background: rgba(255,255,255,0.05); color: inherit; padding: 16px 14px; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(96,195,255,0.14); }
-    input[type='number'] { font-size: 1rem; }
-    input[type='range'] { width: 100%; accent-color: var(--accent); height: 26px; background: rgba(255,255,255,0.08); border-radius: 999px; }
-    input[type='range']::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); border: 3px solid rgba(7, 12, 18, 0.96); box-shadow: 0 0 0 4px rgba(96,195,255,0.14); }
-    input[type='range']::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); border: 3px solid rgba(7, 12, 18, 0.96); }
-    .large-input { font-size: 1.5rem; font-weight: 700; padding: 16px 14px; letter-spacing: -0.02em; }
+    body { margin: 0; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    header { padding: 26px 22px 6px; max-width: 760px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand-mark { width: 46px; height: 46px; border-radius: 16px; background: var(--dark); color: #fff; display: grid; place-items: center; font-size: 1.3rem; flex: 0 0 auto; box-shadow: var(--shadow); }
+    header h1 { margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+    .hint { margin: 3px 0 0; color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
+
+    main { padding: 4px 18px 130px; max-width: 760px; margin: 0 auto; }
+    .view[hidden] { display: none !important; }
+
+    /* Selamlama */
+    .greeting { padding: 14px 4px 18px; }
+    .greet-title { margin: 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
+    .greet-sub { margin: 6px 0 0; color: var(--muted); font-size: 1rem; }
+
+    /* Kart / panel */
+    .panel { background: var(--card); border-radius: 22px; padding: 20px; box-shadow: var(--shadow); }
+    .panel + .panel { margin-top: 18px; }
+    .section-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+    .grid { display: grid; gap: 16px; }
+    .field { display: grid; gap: 8px; }
+    label { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    input, select { width: 100%; border: 2px solid transparent; border-radius: 16px; background: var(--field); color: var(--text); padding: 15px 14px; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; }
+    input::placeholder { color: #b3afa6; }
+    input:focus, select:focus { border-color: var(--coral); background: #fff; box-shadow: 0 0 0 4px rgba(255,122,101,0.14); }
+
+    /* Butonlar — hap şekli */
+    .button { border: 1.5px solid var(--border); background: #fff; color: var(--text); padding: 14px 20px; border-radius: 999px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s, background 0.2s, opacity 0.2s; width: 100%; }
+    .button:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .button:active { transform: translateY(0); }
+    .button.primary { background: var(--dark); border-color: var(--dark); color: #fff; }
+    .button.primary:hover { box-shadow: var(--shadow-lg); }
+    .button.danger { color: var(--danger); border-color: rgba(255,59,48,0.25); background: rgba(255,59,48,0.06); }
+    .button.small { padding: 10px 18px; font-size: 0.9rem; width: auto; }
+    .button:disabled { opacity: 0.6; cursor: default; }
+    .button-row { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+
+    /* Segment geçişi */
+    .seg { display: inline-flex; background: var(--field); border-radius: 999px; padding: 4px; gap: 4px; }
+    .seg button { border: none; background: transparent; color: var(--muted); padding: 9px 16px; border-radius: 999px; font-weight: 700; cursor: pointer; font-size: 0.88rem; transition: background 0.2s, color 0.2s; }
+    .seg button.active { background: var(--dark); color: #fff; }
+
+    /* Özet kartları */
+    .stat-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+    .stat { border-radius: 20px; padding: 18px; background: var(--card); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px; }
+    .stat-chip { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font-size: 1.1rem; }
+    .stat-chip.yellow { background: rgba(251,211,77,0.22); }
+    .stat-chip.coral { background: rgba(255,122,101,0.18); }
+    .stat-value { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+    .stat-title { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+    .stat.featured { grid-column: 1 / -1; background: var(--dark); color: #fff; box-shadow: var(--shadow-lg); }
+    .stat.featured .stat-title { color: rgba(255,255,255,0.6); }
+    .stat.featured .stat-chip { background: rgba(255,255,255,0.12); }
+    .stat.featured .stat-value { font-size: 2rem; }
+
+    /* Listeler */
+    .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .list-item { padding: 16px 18px; border-radius: 18px; background: var(--card); box-shadow: var(--shadow); }
+    .list-item.tappable { cursor: pointer; transition: transform 0.15s, box-shadow 0.2s; }
+    .list-item.tappable:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .li-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .li-title { font-weight: 700; font-size: 1.05rem; }
+    .li-amount { font-weight: 800; color: var(--coral); white-space: nowrap; }
+    .li-sub { margin-top: 7px; color: var(--muted); font-size: 0.88rem; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+    .li-actions { margin-top: 14px; display: flex; gap: 10px; }
+
+    .breakdown { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: grid; gap: 9px; font-size: 0.92rem; }
+    .breakdown .row { display: flex; justify-content: space-between; color: var(--muted); }
+    .breakdown .row strong { color: var(--text); }
+    .breakdown .row.total { color: var(--text); font-weight: 700; padding-top: 8px; border-top: 1px dashed var(--border); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .chip { font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; background: rgba(255,122,101,0.12); color: var(--coral); }
+
+    .empty { text-align: center; color: var(--muted); padding: 30px 12px; font-size: 0.95rem; }
+    .footnote { margin-top: 14px; color: var(--muted); font-size: 0.84rem; line-height: 1.5; text-align: center; }
+
+    /* Hesaplayıcı */
+    .calc-label-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .value-label { color: var(--muted); font-weight: 700; font-size: 0.95rem; }
+    input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; padding: 0; border: none; border-radius: 999px; background: var(--field); accent-color: var(--coral); cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--coral); border: 3px solid #fff; box-shadow: var(--shadow); cursor: pointer; }
+    input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--coral); border: 3px solid #fff; box-shadow: var(--shadow); cursor: pointer; }
+    .large-input { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
+
     .price-cards { display: grid; gap: 14px; }
-    .price-card { border-radius: 22px; padding: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
-    .price-card.highlight { background: rgba(96,195,255,0.16); border-color: rgba(96,195,255,0.24); }
-    .card-title { font-size: 0.95rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .card-value { margin-top: 14px; font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; letter-spacing: -0.04em; }
-    .card-subtitle { margin-top: 10px; color: var(--muted); font-size: 0.95rem; }
-    .card-meta { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; color: #b5d5ff; font-size: 0.95rem; }
-    .cost-breakdown { margin-top: 18px; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; background: rgba(255,255,255,0.03); }
-    .cost-breakdown summary { list-style: none; font-weight: 700; padding: 16px 20px; cursor: pointer; color: inherit; }
-    .cost-breakdown[open] summary { border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .cost-breakdown ul { padding: 0 20px 18px; margin: 0; display: grid; gap: 10px; }
-    .result-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-    .result-item { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
-    .result-item span { color: var(--muted); }
-    .button-row { display: grid; gap: 12px; grid-template-columns: repeat(2,minmax(0,1fr)); }
-    .button { border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.05); color: inherit; padding: 14px 16px; border-radius: 18px; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; }
-    .button:hover { transform: translateY(-1px); background: rgba(96,195,255,0.15); }
-    .footnote { margin-top: 12px; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-    @media (max-width: 520px) {
-      .tabs { grid-template-columns: 1fr 1fr; }
-      .field { gap: 12px; }
-      .button-row { grid-template-columns: 1fr; }
-      .price-cards { grid-template-columns: 1fr; }
+    .pcard { border-radius: 20px; padding: 18px; background: var(--card); box-shadow: var(--shadow); }
+    .pcard .pc-title { font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .pcard .pc-value { margin-top: 10px; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
+    .pcard .pc-meta { margin-top: 10px; color: var(--muted); font-size: 0.88rem; }
+    .pcard.featured { background: var(--dark); color: #fff; box-shadow: var(--shadow-lg); }
+    .pcard.featured .pc-title { color: rgba(255,255,255,0.6); }
+    .pcard.featured .pc-meta { color: rgba(255,255,255,0.72); }
+
+    .calc-breakdown { margin-top: 16px; border-radius: 18px; background: var(--field); overflow: hidden; }
+    .calc-breakdown summary { list-style: none; cursor: pointer; padding: 15px 18px; font-weight: 700; }
+    .calc-breakdown summary::-webkit-details-marker { display: none; }
+    .calc-breakdown summary::after { content: "+"; float: right; color: var(--muted); font-weight: 800; }
+    .calc-breakdown[open] summary::after { content: "−"; }
+    .calc-breakdown ul { list-style: none; margin: 0; padding: 0 18px 16px; display: grid; gap: 10px; }
+    .calc-breakdown li { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.92rem; }
+    .calc-breakdown li strong { color: var(--text); }
+
+    /* Alt sekme barı — yüzen */
+    .tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; width: calc(100% - 32px); max-width: 480px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px; background: rgba(255,255,255,0.96); backdrop-filter: blur(14px); border-radius: 26px; box-shadow: var(--shadow-lg); z-index: 30; }
+    .tab { border: none; background: transparent; color: var(--muted); padding: 11px 6px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 700; font-size: 0.72rem; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.15s; }
+    .tab-ico { font-size: 1.2rem; line-height: 1; }
+    .tab:hover { transform: translateY(-1px); }
+    .tab.active { background: var(--dark); color: #fff; }
+
+    /* Modal — alttan açılan sheet */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(28,28,30,0.35); backdrop-filter: blur(4px); display: flex; align-items: flex-end; justify-content: center; z-index: 50; }
+    .modal-backdrop[hidden] { display: none; }
+    .modal { background: var(--card); border-radius: 28px 28px 0 0; padding: 24px 22px calc(24px + env(safe-area-inset-bottom)); width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+    .modal h2 { margin: 0 0 20px; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; }
+    @media (min-width: 560px) {
+      .modal-backdrop { align-items: center; }
+      .modal { border-radius: 28px; }
+    }
+
+    /* Şifre kapısı */
+    .gate { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 22px; background: var(--bg); }
+    .gate-box { width: 100%; max-width: 360px; text-align: center; background: var(--card); border-radius: 26px; padding: 32px 26px; box-shadow: var(--shadow); }
+    .gate-mark { width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 18px; background: var(--dark); color: #fff; display: grid; place-items: center; font-size: 1.5rem; }
+    .gate-box h1 { font-size: 1.3rem; font-weight: 800; margin: 0 0 6px; }
+    .gate-box p { color: var(--muted); margin: 0 0 20px; font-size: 0.92rem; }
+    .gate-err { color: var(--danger); font-size: 0.88rem; min-height: 18px; margin-top: 12px; }
+
+    .toast { position: fixed; left: 50%; bottom: 104px; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 13px 22px; border-radius: 999px; font-weight: 600; z-index: 60; box-shadow: var(--shadow-lg); opacity: 0; transition: opacity 0.25s, transform 0.25s; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+
+    canvas { max-width: 100%; }
+    .chart-wrap { margin-top: 16px; height: 240px; }
+    .spin { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; }
+    .button:not(.primary) .spin { border-color: rgba(0,0,0,0.2); border-top-color: var(--coral); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Masaüstü: dikey nav rail + geniş düzen */
+    @media (min-width: 900px) {
+      header, main { max-width: 1200px; margin: 0 auto; padding-left: 124px; padding-right: 28px; }
+      header { padding-top: 22px; padding-bottom: 4px; }
+      main { padding-bottom: 40px; }
+      .greeting { padding: 6px 4px 10px; }
+      .greet-title { font-size: 1.8rem; }
+
+      .tabs { left: 18px; top: 50%; bottom: auto; width: 88px; max-width: none; height: max-content; grid-template-columns: 1fr; gap: 8px; padding: 10px; border-radius: 28px; transform: translateY(-50%); }
+      .tab { padding: 14px 6px; border-radius: 20px; font-size: 0.74rem; }
+      .toast { left: auto; right: 28px; bottom: 28px; transform: none; }
+      .toast.show { transform: translateY(-6px); }
+
+      /* Özet: kartlar solda, grafik sağda — tek ekran (yalnızca Özet aktifken) */
+      #view-summary:not([hidden]) { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: start; }
+      #view-summary > * { margin-top: 0; }
+      #view-summary .greeting { grid-column: 1 / -1; }
+      #view-summary .summary-overview { grid-column: 1; grid-row: 2; }
+      #view-summary .summary-chart { grid-column: 2; grid-row: 2 / span 2; }
+      #view-summary .summary-top { grid-column: 1; grid-row: 3; }
+      .summary-chart .chart-wrap { height: 340px; }
+
+      /* Özet kartları: 3'lü grid, kompakt */
+      .stat-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .stat { padding: 15px; gap: 9px; }
+      .stat-chip { width: 34px; height: 34px; }
+      .stat-value { font-size: 1.4rem; }
+      .stat.featured { grid-column: auto; }
+      .stat.featured .stat-value { font-size: 1.5rem; }
+
+      /* Hesaplayıcı: girdiler solda, fiyatlar sağda */
+      #view-calc:not([hidden]) { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+      #view-calc > * { margin-top: 0; }
+
+      /* Diğer sekmeler geniş alanı kullansın */
+      #designsList .list, #salesList .list { grid-template-columns: repeat(2, 1fr); align-items: start; }
+      #view-settings #settingsForm { grid-template-columns: repeat(3, 1fr); }
+      #view-settings .footnote { grid-column: 1 / -1; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>3D Baskı Fiyat Hesaplayıcı</h1>
-    <p class="hint">Filament, süre ve ayarlara göre anlık maliyet ve satış fiyatı hesaplanır.</p>
-  </header>
-  <div class="tabs">
-    <button id="tabCalculator" class="tab active" type="button">Hesaplayıcı</button>
-    <button id="tabSettings" class="tab" type="button">Ayarlar</button>
+  <!-- ===== Sabitler config.js'ten gelir (config.example.js'i kopyalayıp doldur) ===== -->
+  <script src="config.js"></script>
+
+  <!-- ===== Şifre kapısı ===== -->
+  <div id="gate" class="gate">
+    <div class="gate-box">
+      <div class="gate-mark">🖨️</div>
+      <h1>3D Baskı İş Paneli</h1>
+      <p>Devam etmek için şifreyi girin.</p>
+      <input id="gateInput" type="password" inputmode="numeric" placeholder="Şifre" autocomplete="off">
+      <div class="gate-err" id="gateErr"></div>
+      <button class="button primary" id="gateBtn" style="margin-top:16px;">Giriş</button>
+    </div>
   </div>
-  <main>
-    <section id="calculatorPanel" class="panel">
-      <div class="section-title"><span>Girdiler</span></div>
-      <div class="grid">
-        <div class="field">
-          <label for="filamentProfile">Filament profili</label>
-          <select id="filamentProfile"></select>
-        </div>
-        <div class="field">
-          <div class="field-label-row">
-            <label for="filamentWeight">Filament kullanımı</label>
-            <span id="filamentWeightLabel" class="value-label">50 g</span>
+
+  <header>
+    <div class="brand">
+      <div class="brand-mark">🖨️</div>
+      <div>
+        <h1>İş Paneli</h1>
+        <p class="hint" id="headerHint">Üretim, satış ve kârı tek yerden takip et.</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" hidden>
+    <!-- ÖZET -->
+    <section id="view-summary" class="view">
+      <div class="greeting">
+        <h2 class="greet-title">Merhaba 👋</h2>
+        <p class="greet-sub">Bugünkü üretim ve kazancının özeti.</p>
+      </div>
+
+      <div class="panel summary-overview">
+        <div class="section-title">
+          <span>Genel Bakış</span>
+          <div class="seg" id="periodSeg">
+            <button data-period="week" class="active">Bu Hafta</button>
+            <button data-period="month">Bu Ay</button>
           </div>
-          <input id="filamentWeight" type="range" min="0" max="1000" step="5" value="50">
-          <input id="filamentWeightInput" class="large-input" type="number" min="0" step="5" value="50" inputmode="numeric">
         </div>
-        <div class="field">
-          <div class="field-label-row">
-            <label for="printHours">Baskı süresi</label>
-            <span id="printHoursLabel" class="value-label">1,0 saat</span>
+        <div id="summaryStats"></div>
+      </div>
+
+      <div class="panel summary-chart">
+        <div class="section-title">
+          <span>Üretim Grafiği</span>
+          <div class="seg" id="metricSeg">
+            <button data-metric="units" class="active">Adet</button>
+            <button data-metric="revenue">Ciro</button>
           </div>
-          <input id="printHours" type="range" min="0" max="72" step="0.5" value="1">
-          <input id="printHoursInput" class="large-input" type="number" min="0" step="0.1" value="1" inputmode="decimal">
         </div>
+        <div class="chart-wrap"><canvas id="prodChart"></canvas></div>
+      </div>
+
+      <div class="panel summary-top">
+        <div class="section-title"><span>En Çok Satılan Tasarımlar</span></div>
+        <div id="topDesigns"></div>
       </div>
     </section>
-    <section id="resultsPanel" class="panel">
-      <div class="section-title"><span>Sonuçlar</span></div>
-      <div class="price-cards">
-        <div class="price-card"><div class="card-title">Maliyet</div><div id="costCardValue" class="card-value">0,00 TL</div><div class="card-subtitle">Kâr yok</div></div>
-        <div class="price-card"><div class="card-title">Öğrenci Paketi</div><div id="studentCardValue" class="card-value">0,00 TL</div><div class="card-meta"><span id="studentDiscountMeta">Normal kârın yarısı</span><span id="studentProfitMeta">Kâr: 0,00 TL (%0)</span></div></div>
-        <div class="price-card highlight"><div class="card-title">Normal Fiyat</div><div id="normalCardValue" class="card-value">0,00 TL</div><div class="card-meta"><span id="normalProfitMeta">Kâr: 0,00 TL (%0)</span></div></div>
+
+    <!-- HESAPLAYICI -->
+    <section id="view-calc" class="view" hidden>
+      <div class="panel calc-inputs">
+        <div class="section-title"><span>Girdiler</span></div>
+        <div class="grid">
+          <div class="field">
+            <label for="calc_filament">Filament fiyatı (TL/kg)</label>
+            <input id="calc_filament" type="number" min="0" step="0.01" inputmode="decimal">
+          </div>
+          <div class="field">
+            <div class="calc-label-row"><label for="calc_grams_num">Gram</label><span class="value-label" id="calc_grams_label">50 g</span></div>
+            <input id="calc_grams_range" type="range" min="0" max="1000" step="5" value="50">
+            <input id="calc_grams_num" class="large-input" type="number" min="0" step="5" value="50" inputmode="numeric">
+          </div>
+          <div class="field">
+            <div class="calc-label-row"><label for="calc_hours_num">Baskı süresi (saat)</label><span class="value-label" id="calc_hours_label">1,0 saat</span></div>
+            <input id="calc_hours_range" type="range" min="0" max="72" step="0.5" value="1">
+            <input id="calc_hours_num" class="large-input" type="number" min="0" step="0.1" value="1" inputmode="decimal">
+          </div>
+        </div>
       </div>
-      <details class="cost-breakdown" open>
-        <summary>Maliyet kalemleri</summary>
-        <ul class="result-list">
-          <li class="result-item"><span>Filament maliyeti</span><strong id="costFilament">0,00 TL</strong></li>
-          <li class="result-item"><span>Elektrik maliyeti</span><strong id="costElectricity">0,00 TL</strong></li>
-          <li class="result-item"><span>Amortisman</span><strong id="costAmortization">0,00 TL</strong></li>
-          <li class="result-item"><span>İşçilik / hazırlık</span><strong id="costLabor">0,00 TL</strong></li>
-        </ul>
-      </details>
-      <p class="footnote">Tüm fiyatlar 10 TL'ye yuvarlanır. Öğrenci paketi maliyetten düşükse maliyete eşitlenir.</p>
+
+      <div class="panel calc-results">
+        <div class="section-title"><span>Fiyatlar</span></div>
+        <div class="price-cards">
+          <div class="pcard">
+            <div class="pc-title">Maliyet</div>
+            <div class="pc-value" id="pc_cost_value">0,00 TL</div>
+            <div class="pc-meta">Kâr yok</div>
+          </div>
+          <div class="pcard">
+            <div class="pc-title">Öğrenci Paketi</div>
+            <div class="pc-value" id="pc_student_value">0,00 TL</div>
+            <div class="pc-meta" id="pc_student_meta">Kâr: 0,00 TL (%0)</div>
+          </div>
+          <div class="pcard featured">
+            <div class="pc-title">Normal Fiyat</div>
+            <div class="pc-value" id="pc_normal_value">0,00 TL</div>
+            <div class="pc-meta" id="pc_normal_meta">Kâr: 0,00 TL (%0)</div>
+          </div>
+        </div>
+        <details class="calc-breakdown">
+          <summary>Maliyet dökümü</summary>
+          <ul>
+            <li><span>Filament</span><strong id="cb_filament">0,00 TL</strong></li>
+            <li><span>Elektrik</span><strong id="cb_elec">0,00 TL</strong></li>
+            <li><span>Makine</span><strong id="cb_machine">0,00 TL</strong></li>
+            <li><span>İşçilik</span><strong id="cb_labor">0,00 TL</strong></li>
+          </ul>
+        </details>
+        <p class="footnote">Filament fiyatı bu hesaba özeldir; ayarları değiştirmez. Diğer parametreler Ayarlar'dan okunur. Fiyatlar 10 TL'ye yuvarlanır.</p>
+      </div>
     </section>
-    <section id="settingsPanel" class="panel" hidden>
-      <div class="section-title"><span>Ayarlar</span></div>
-      <div class="grid">
-        <div class="field">
-          <label for="printerPower">Yazıcı gücü (kW)</label>
-          <input id="printerPower" type="number" min="0" step="0.01" value="0.15" inputmode="decimal">
+
+    <!-- TASARIMLAR -->
+    <section id="view-designs" class="view" hidden>
+      <div class="panel">
+        <div class="section-title"><span>Tasarımlar</span>
+          <button class="button primary small" id="addDesignBtn">+ Ekle</button>
         </div>
-        <div class="field">
-          <label for="electricityPrice">Elektrik fiyatı (TL/kWh)</label>
-          <input id="electricityPrice" type="number" min="0" step="0.01" value="2.5" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="amortizationRate">Makine saat ücreti (TL/saat)</label>
-          <input id="amortizationRate" type="number" min="0" step="0.5" value="30" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="laborFee">Baskı başı hazırlık / işçilik (TL)</label>
-          <input id="laborFee" type="number" min="0" step="0.5" value="30" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="profitMultiplier">Kâr çarpanı</label>
-          <input id="profitMultiplier" type="number" min="1" step="0.1" value="2.5" inputmode="decimal">
-        </div>
-      </div>
-      <div class="panel" style="margin-top:18px;">
-        <div class="section-title"><span>Filament profilleri</span></div>
-        <div class="grid" id="profileList"></div>
-        <div class="row" style="margin-top:12px;">
-          <input id="newProfileName" type="text" placeholder="Profil adı (ör. PLA)" aria-label="Profil adı">
-          <input id="newProfilePrice" type="number" min="0" step="0.1" placeholder="TL/kg" aria-label="TL/kg">
-        </div>
-        <div class="button-row" style="margin-top:10px;">
-          <button id="addProfile" class="button" type="button">Profil Ekle</button>
-          <button id="resetDefaults" class="button" type="button">Varsayılanlara sıfırla</button>
-        </div>
+        <div id="designsList"></div>
       </div>
     </section>
-    <p class="footnote">Uygulama çevrimdışı çalışır ve ana ekrana eklendiğinde PWA modu aktif olur.</p>
+
+    <!-- SATIŞLAR -->
+    <section id="view-sales" class="view" hidden>
+      <div class="panel">
+        <div class="section-title"><span>Satışlar</span>
+          <button class="button primary small" id="addSaleBtn">+ Ekle</button>
+        </div>
+        <div id="salesList"></div>
+      </div>
+    </section>
+
+    <!-- AYARLAR -->
+    <section id="view-settings" class="view" hidden>
+      <div class="panel">
+        <div class="section-title"><span>Hesaplama Ayarları</span></div>
+        <div class="grid" id="settingsForm">
+          <div class="field"><label for="set_filament_price_per_kg">Filament fiyatı (TL/kg)</label><input id="set_filament_price_per_kg" type="number" step="0.01" min="0" inputmode="decimal"></div>
+          <div class="field"><label for="set_printer_power_kw">Yazıcı gücü (kW)</label><input id="set_printer_power_kw" type="number" step="0.01" min="0" inputmode="decimal"></div>
+          <div class="field"><label for="set_elec_price_per_kwh">Elektrik fiyatı (TL/kWh)</label><input id="set_elec_price_per_kwh" type="number" step="0.01" min="0" inputmode="decimal"></div>
+          <div class="field"><label for="set_machine_hourly">Makine saat ücreti (TL/saat)</label><input id="set_machine_hourly" type="number" step="0.5" min="0" inputmode="decimal"></div>
+          <div class="field"><label for="set_labor_per_print">Baskı başı işçilik (TL)</label><input id="set_labor_per_print" type="number" step="0.5" min="0" inputmode="decimal"></div>
+          <div class="field"><label for="set_profit_multiplier">Kâr çarpanı</label><input id="set_profit_multiplier" type="number" step="0.1" min="1" inputmode="decimal"></div>
+        </div>
+        <button class="button primary" id="saveSettingsBtn" style="margin-top:18px;">Ayarları Kaydet</button>
+        <p class="footnote">Ayarlar tüm tasarımların maliyet ve önerilen fiyat hesabını etkiler.</p>
+      </div>
+    </section>
   </main>
+
+  <nav class="tabs" id="tabs" hidden>
+    <button class="tab active" data-view="summary"><span class="tab-ico">📊</span><span class="tab-lbl">Özet</span></button>
+    <button class="tab" data-view="calc"><span class="tab-ico">🧮</span><span class="tab-lbl">Hesaplayıcı</span></button>
+    <button class="tab" data-view="designs"><span class="tab-ico">🧩</span><span class="tab-lbl">Tasarımlar</span></button>
+    <button class="tab" data-view="sales"><span class="tab-ico">🧾</span><span class="tab-lbl">Satışlar</span></button>
+    <button class="tab" data-view="settings"><span class="tab-ico">⚙️</span><span class="tab-lbl">Ayarlar</span></button>
+  </nav>
+
+  <!-- Modal host -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" id="modalBox"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
   <script>
-    const defaults = {
-      profiles: [{ name: 'Filetto PLA+', price: 500 }],
-      printerPower: 0.15,
-      electricityPrice: 3.5,
-      amortizationRate: 30,
-      laborFee: 150,
-      profitMultiplier: 2.5,
-      filamentWeight: 50,
-      printHours: 1
+  (function () {
+    'use strict';
+
+    // ===== Yardımcılar =====
+    const $ = (id) => document.getElementById(id);
+    const fmtTL = (v) => `${(Number(v) || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} TL`;
+    const fmtNum = (v, d = 0) => (Number(v) || 0).toLocaleString('tr-TR', { minimumFractionDigits: d, maximumFractionDigits: d });
+    const round10 = (v) => Math.round((Number(v) || 0) / 10) * 10;
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    let toastTimer = null;
+    function toast(msg) {
+      const t = $('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ===== Durum =====
+    const SETTING_KEYS = ['filament_price_per_kg', 'printer_power_kw', 'elec_price_per_kwh', 'machine_hourly', 'labor_per_print', 'profit_multiplier'];
+    const SETTING_DEFAULTS = { filament_price_per_kg: 500, printer_power_kw: 0.15, elec_price_per_kwh: 3.5, machine_hourly: 30, labor_per_print: 150, profit_multiplier: 2.5 };
+
+    const state = {
+      designs: [],
+      sales: [],
+      settings: { ...SETTING_DEFAULTS },
+      period: 'week',
+      metric: 'units',
+      view: 'summary'
     };
-    const storageKey = '3dPrintCalculatorSettings';
-    const elements = {
-      calculatorPanel: document.getElementById('calculatorPanel'),
-      settingsPanel: document.getElementById('settingsPanel'),
-      tabCalculator: document.getElementById('tabCalculator'),
-      tabSettings: document.getElementById('tabSettings'),
-      filamentProfile: document.getElementById('filamentProfile'),
-      filamentWeight: document.getElementById('filamentWeight'),
-      filamentWeightInput: document.getElementById('filamentWeightInput'),
-      filamentWeightLabel: document.getElementById('filamentWeightLabel'),
-      printHours: document.getElementById('printHours'),
-      printHoursInput: document.getElementById('printHoursInput'),
-      printHoursLabel: document.getElementById('printHoursLabel'),
-      printerPower: document.getElementById('printerPower'),
-      electricityPrice: document.getElementById('electricityPrice'),
-      amortizationRate: document.getElementById('amortizationRate'),
-      laborFee: document.getElementById('laborFee'),
-      profitMultiplier: document.getElementById('profitMultiplier'),
-      profileList: document.getElementById('profileList'),
-      newProfileName: document.getElementById('newProfileName'),
-      newProfilePrice: document.getElementById('newProfilePrice'),
-      addProfile: document.getElementById('addProfile'),
-      resetDefaults: document.getElementById('resetDefaults'),
-      costFilament: document.getElementById('costFilament'),
-      costElectricity: document.getElementById('costElectricity'),
-      costAmortization: document.getElementById('costAmortization'),
-      costLabor: document.getElementById('costLabor'),
-      costCardValue: document.getElementById('costCardValue'),
-      studentCardValue: document.getElementById('studentCardValue'),
-      normalCardValue: document.getElementById('normalCardValue'),
-      studentDiscountMeta: document.getElementById('studentDiscountMeta'),
-      studentProfitMeta: document.getElementById('studentProfitMeta'),
-      normalProfitMeta: document.getElementById('normalProfitMeta')
-    };
-    let settings = { ...defaults };
-    function loadSettings() {
-      try {
-        const saved = localStorage.getItem(storageKey);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          settings = { ...defaults, ...parsed };
-          if (!Array.isArray(settings.profiles) || settings.profiles.length === 0) {
-            settings.profiles = defaults.profiles.slice();
-          }
-        }
-      } catch (error) {
-        settings = { ...defaults };
-      }
+
+    let sb = null;
+    let chart = null;
+
+    // ===== Maliyet hesabı =====
+    function costOf(design) {
+      const s = state.settings;
+      const grams = Number(design.grams) || 0;
+      const hours = Number(design.print_hours) || 0;
+      const units = Math.max(1, Number(design.units_per_plate) || 1);
+      const filament = grams * (Number(s.filament_price_per_kg) / 1000);
+      const elektrik = hours * Number(s.printer_power_kw) * Number(s.elec_price_per_kwh);
+      const makine = hours * Number(s.machine_hourly);
+      const iscilik = Number(s.labor_per_print);
+      const toplam = filament + elektrik + makine + iscilik;
+      const unitCost = toplam / units;
+      const unitGrams = grams / units;
+      const unitHours = hours / units;
+      const unitPrice = round10(unitCost * Number(s.profit_multiplier));
+      return { filament, elektrik, makine, iscilik, toplam, unitCost, unitGrams, unitHours, unitPrice, units };
     }
-    function saveSettings() {
-      localStorage.setItem(storageKey, JSON.stringify(settings));
+
+    // ===== Hesaplayıcı (tek seferlik baskı) =====
+    let calcFilamentTouched = false;
+
+    function fillCalcDefaults() {
+      // Filament fiyatı varsayılan olarak ayarlardan dolar; kullanıcı elle değiştirdiyse korunur
+      if (!calcFilamentTouched) $('calc_filament').value = state.settings.filament_price_per_kg;
     }
-    function numberFormat(value) {
-      return value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function calcLabel(el, value, unit) {
+      el.textContent = unit === 'g'
+        ? `${Math.round(value)} g`
+        : `${(Number(value) || 0).toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} saat`;
     }
-    function updateProfileOptions() {
-      elements.filamentProfile.innerHTML = '';
-      settings.profiles.forEach((profile, index) => {
-        const option = document.createElement('option');
-        option.value = String(index);
-        option.textContent = `${profile.name} – ${numberFormat(profile.price)} TL/kg`;
-        elements.filamentProfile.appendChild(option);
-      });
+
+    function calcCompute() {
+      const s = state.settings;
+      const fPrice = Math.max(0, Number($('calc_filament').value) || 0);
+      const grams = Math.max(0, Number($('calc_grams_num').value) || 0);
+      const hours = Math.max(0, Number($('calc_hours_num').value) || 0);
+
+      const filament = grams * (fPrice / 1000);
+      const elektrik = hours * Number(s.printer_power_kw) * Number(s.elec_price_per_kwh);
+      const makine = hours * Number(s.machine_hourly);
+      const iscilik = Number(s.labor_per_print);
+      const toplam = filament + elektrik + makine + iscilik;
+
+      const normalRaw = toplam * Number(s.profit_multiplier);
+      const roundedCost = round10(toplam);
+      const normal = Math.max(0, round10(normalRaw));
+
+      // Öğrenci: normaldeki kârın yarısı (ara hesap yuvarlamasız)
+      let studentRaw = normalRaw <= toplam ? toplam : toplam + (normalRaw - toplam) / 2;
+      let student = round10(studentRaw);
+      if (student < roundedCost) student = roundedCost; // yuvarlama sonrası maliyetin altına düşmesin
+
+      const studentProfit = student - toplam;
+      const studentPct = toplam > 0 ? (studentProfit / toplam) * 100 : 0;
+      const normalProfit = normal - toplam;
+      const normalPct = toplam > 0 ? (normalProfit / toplam) * 100 : 0;
+
+      $('pc_cost_value').textContent = fmtTL(roundedCost);
+      $('pc_student_value').textContent = fmtTL(student);
+      $('pc_student_meta').textContent = `Kâr: ${fmtTL(studentProfit)} (%${fmtNum(studentPct, 0)})`;
+      $('pc_normal_value').textContent = fmtTL(normal);
+      $('pc_normal_meta').textContent = `Kâr: ${fmtTL(normalProfit)} (%${fmtNum(normalPct, 0)})`;
+
+      $('cb_filament').textContent = fmtTL(filament);
+      $('cb_elec').textContent = fmtTL(elektrik);
+      $('cb_machine').textContent = fmtTL(makine);
+      $('cb_labor').textContent = fmtTL(iscilik);
     }
-    function renderProfileList() {
-      elements.profileList.innerHTML = '';
-      settings.profiles.forEach((profile, index) => {
-        const card = document.createElement('div');
-        card.className = 'result-item';
-        card.innerHTML = `<div><strong>${profile.name}</strong><div class="small">${numberFormat(profile.price)} TL/kg</div></div><button data-index="${index}" style="border:none;background:rgba(255,255,255,0.05);color:#f96666;padding:10px 14px;border-radius:14px;cursor:pointer;min-width:72px;">Sil</button>`;
-        const button = card.querySelector('button');
-        button.addEventListener('click', () => {
-          settings.profiles.splice(index, 1);
-          if (settings.profiles.length === 0) {
-            settings.profiles = defaults.profiles.slice();
-          }
-          saveSettings();
-          updateProfileOptions();
-          renderProfileList();
-          calculate();
-        });
-        elements.profileList.appendChild(card);
-      });
-    }
-    function formatTL(value) {
-      return `${numberFormat(value)} TL`;
-    }
-    function clamp(value, min, max) {
-      return Math.min(Math.max(value, min), max);
-    }
-    function updateSliderLabel(value, labelElement, unit) {
-      labelElement.textContent = unit === 'g' ? `${Math.round(value)} g` : `${value.toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} saat`;
-    }
-    function calculate() {
-      const profile = settings.profiles[Math.max(0, Math.min(settings.profiles.length - 1, Number(elements.filamentProfile.value)))];
-      const filamentWeight = Math.max(0, Number(elements.filamentWeightInput.value) || 0);
-      const totalHours = Math.max(0, Number(elements.printHoursInput.value) || 0);
-      const filamentCost = filamentWeight * (profile.price / 1000);
-      const electricityCost = totalHours * settings.printerPower * settings.electricityPrice;
-      const amortizationCost = totalHours * settings.amortizationRate;
-      const laborCost = settings.laborFee;
-      const totalCost = filamentCost + electricityCost + amortizationCost + laborCost;
-      const normalPriceRaw = totalCost * settings.profitMultiplier;
-      const roundedCost = Math.round(totalCost / 10) * 10;
-      const normalPrice = Math.max(0, Math.round(normalPriceRaw / 10) * 10);
-      let studentPriceRaw = totalCost + (normalPriceRaw - totalCost) / 2;
-      if (normalPriceRaw <= totalCost) {
-        studentPriceRaw = totalCost;
-      }
-      let studentPrice = Math.round(studentPriceRaw / 10) * 10;
-      if (normalPriceRaw <= totalCost) {
-        studentPrice = roundedCost;
-      }
-      const studentProfit = studentPrice - totalCost;
-      const studentProfitPercent = totalCost > 0 ? (studentProfit / totalCost) * 100 : 0;
-      const normalProfit = normalPrice - totalCost;
-      const normalProfitPercent = totalCost > 0 ? (normalProfit / totalCost) * 100 : 0;
-      elements.costFilament.textContent = formatTL(filamentCost);
-      elements.costElectricity.textContent = formatTL(electricityCost);
-      elements.costAmortization.textContent = formatTL(amortizationCost);
-      elements.costLabor.textContent = formatTL(laborCost);
-      elements.costCardValue.textContent = formatTL(roundedCost);
-      elements.normalCardValue.textContent = formatTL(normalPrice);
-      elements.studentCardValue.textContent = formatTL(studentPrice);
-      elements.studentDiscountMeta.textContent = 'Normal kârın yarısı';
-      elements.studentProfitMeta.textContent = `Kâr: ${formatTL(studentProfit)} (${numberFormat(studentProfitPercent)} %)`;
-      elements.normalProfitMeta.textContent = `Kâr: ${formatTL(normalProfit)} (${numberFormat(normalProfitPercent)} %)`;
-    }
-    function applySettingsToInputs() {
-      elements.printerPower.value = settings.printerPower;
-      elements.electricityPrice.value = settings.electricityPrice;
-      elements.amortizationRate.value = settings.amortizationRate;
-      elements.laborFee.value = settings.laborFee;
-      elements.profitMultiplier.value = settings.profitMultiplier;
-      elements.filamentWeight.value = settings.filamentWeight;
-      elements.filamentWeightInput.value = settings.filamentWeight;
-      updateSliderLabel(settings.filamentWeight, elements.filamentWeightLabel, 'g');
-      elements.printHours.value = settings.printHours;
-      elements.printHoursInput.value = settings.printHours;
-      updateSliderLabel(settings.printHours, elements.printHoursLabel, 'h');
-    }
-    function initTabs() {
-      elements.tabCalculator.addEventListener('click', () => {
-        elements.tabCalculator.classList.add('active');
-        elements.tabSettings.classList.remove('active');
-        elements.calculatorPanel.hidden = false;
-        elements.settingsPanel.hidden = true;
-      });
-      elements.tabSettings.addEventListener('click', () => {
-        elements.tabCalculator.classList.remove('active');
-        elements.tabSettings.classList.add('active');
-        elements.calculatorPanel.hidden = true;
-        elements.settingsPanel.hidden = false;
-      });
-    }
-    function attachInputListeners() {
-      const updateRange = (range, input, label, unit) => {
+
+    function bindCalc() {
+      const syncPair = (range, num, label, unit) => {
         range.addEventListener('input', () => {
-          const value = Number(range.value);
-          input.value = value;
-          updateSliderLabel(value, label, unit);
-          calculate();
+          num.value = range.value;
+          calcLabel(label, range.value, unit);
+          calcCompute();
         });
-        input.addEventListener('input', () => {
-          const value = Number(input.value) || 0;
-          if (value > Number(range.max)) {
-            range.value = range.max;
-          } else if (value < Number(range.min)) {
-            range.value = range.min;
-          } else {
-            range.value = value;
-          }
-          updateSliderLabel(value, label, unit);
-          calculate();
+        num.addEventListener('input', () => {
+          const v = Number(num.value) || 0;
+          range.value = Math.min(Math.max(v, Number(range.min)), Number(range.max));
+          calcLabel(label, v, unit);
+          calcCompute();
         });
       };
-      elements.filamentWeight.value = settings.filamentWeight;
-      elements.filamentWeightInput.value = settings.filamentWeight;
-      updateSliderLabel(settings.filamentWeight, elements.filamentWeightLabel, 'g');
-      elements.printHours.value = settings.printHours;
-      elements.printHoursInput.value = settings.printHours;
-      updateSliderLabel(settings.printHours, elements.printHoursLabel, 'h');
-      updateRange(elements.filamentWeight, elements.filamentWeightInput, elements.filamentWeightLabel, 'g');
-      updateRange(elements.printHours, elements.printHoursInput, elements.printHoursLabel, 'h');
-      elements.filamentProfile.addEventListener('change', calculate);
-      ['printerPower', 'electricityPrice', 'amortizationRate', 'laborFee', 'profitMultiplier'].forEach(id => {
-        document.getElementById(id).addEventListener('input', (event) => {
-          const field = event.target;
-          settings[id] = Number(field.value) || 0;
-          saveSettings();
-          calculate();
-        });
+      syncPair($('calc_grams_range'), $('calc_grams_num'), $('calc_grams_label'), 'g');
+      syncPair($('calc_hours_range'), $('calc_hours_num'), $('calc_hours_label'), 'h');
+      $('calc_filament').addEventListener('input', () => { calcFilamentTouched = true; calcCompute(); });
+    }
+
+    // ===== Dönem aralığı =====
+    function periodRange(period) {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      if (period === 'week') {
+        const dow = (start.getDay() + 6) % 7; // Pazartesi = 0
+        start.setDate(start.getDate() - dow);
+      } else {
+        start.setDate(1);
+      }
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      end.setHours(23, 59, 59, 999);
+      return { start, end };
+    }
+    function parseSaleDate(s) {
+      // sold_at: 'YYYY-MM-DD'
+      const d = new Date((s.sold_at || s.created_at || '').slice(0, 10) + 'T00:00:00');
+      return isNaN(d) ? null : d;
+    }
+
+    // ===== Veri çekme =====
+    async function loadAll() {
+      const [dRes, sRes, setRes] = await Promise.all([
+        sb.from('designs').select('*').order('created_at', { ascending: false }),
+        sb.from('sales').select('*, designs(*)').order('sold_at', { ascending: false }).order('created_at', { ascending: false }),
+        sb.from('settings').select('*')
+      ]);
+      if (dRes.error) throw dRes.error;
+      if (sRes.error) throw sRes.error;
+      if (setRes.error) throw setRes.error;
+
+      state.designs = dRes.data || [];
+      state.sales = sRes.data || [];
+
+      const settings = { ...SETTING_DEFAULTS };
+      (setRes.data || []).forEach((row) => {
+        if (SETTING_KEYS.includes(row.key)) settings[row.key] = Number(row.value);
       });
-      elements.addProfile.addEventListener('click', () => {
-        const name = elements.newProfileName.value.trim() || 'Yeni Profil';
-        const price = Number(elements.newProfilePrice.value);
-        if (!price || price <= 0) {
-          elements.newProfilePrice.focus();
-          return;
+      state.settings = settings;
+    }
+
+    // ===== ÖZET =====
+    function renderSummary() {
+      const { start, end } = periodRange(state.period);
+      const inRange = state.sales.filter((s) => {
+        const d = parseSaleDate(s);
+        return d && d >= start && d <= end;
+      });
+
+      let units = 0, grams = 0, machineHours = 0, revenue = 0, cost = 0;
+      const perDesign = {};
+      inRange.forEach((sale) => {
+        const design = sale.designs;
+        const qty = Number(sale.quantity) || 0;
+        const amt = Number(sale.sale_amount) || 0;
+        units += qty;
+        revenue += amt;
+        if (design) {
+          const c = costOf(design);
+          grams += qty * c.unitGrams;
+          machineHours += qty * c.unitHours;
+          cost += qty * c.unitCost;
+          const key = design.id;
+          if (!perDesign[key]) perDesign[key] = { name: design.name, qty: 0, revenue: 0 };
+          perDesign[key].qty += qty;
+          perDesign[key].revenue += amt;
+        } else {
+          if (!perDesign['_'] ) perDesign['_'] = { name: 'Bilinmeyen', qty: 0, revenue: 0 };
+          perDesign['_'].qty += qty;
+          perDesign['_'].revenue += amt;
         }
-        settings.profiles.push({ name, price });
-        elements.newProfileName.value = '';
-        elements.newProfilePrice.value = '';
-        saveSettings();
-        updateProfileOptions();
-        renderProfileList();
-        calculate();
       });
-      elements.resetDefaults.addEventListener('click', () => {
-        settings = { ...defaults, profiles: defaults.profiles.slice() };
-        saveSettings();
-        updateProfileOptions();
-        renderProfileList();
-        applySettingsToInputs();
-        elements.filamentWeight.value = defaults.filamentWeight || 50;
-        elements.filamentWeightInput.value = defaults.filamentWeight || 50;
-        elements.printHours.value = defaults.printHours || 1;
-        elements.printHoursInput.value = defaults.printHours || 1;
-        updateSliderLabel(Number(elements.filamentWeightInput.value), elements.filamentWeightLabel, 'g');
-        updateSliderLabel(Number(elements.printHoursInput.value), elements.printHoursLabel, 'h');
-        calculate();
+      const profit = revenue - cost;
+
+      const stats = [
+        { t: 'Üretilen Adet', v: fmtNum(units), icon: '📦', chip: 'yellow' },
+        { t: 'Toplam Gram', v: fmtNum(grams, 0) + ' g', icon: '⚖️', chip: 'coral' },
+        { t: 'Makine Saati', v: fmtNum(machineHours, 1) + ' s', icon: '⏱️', chip: 'yellow' },
+        { t: 'Toplam Maliyet', v: fmtTL(cost), icon: '🧾', chip: 'coral' },
+        { t: 'Toplam Ciro', v: fmtTL(revenue), icon: '💰', chip: 'yellow' },
+        { t: 'Toplam Kâr', v: fmtTL(profit), icon: '✨', featured: true }
+      ];
+      $('summaryStats').innerHTML = '<div class="stat-grid">' + stats.map((s) =>
+        `<div class="stat ${s.featured ? 'featured' : ''}">
+           <div class="stat-chip ${s.chip || ''}">${s.icon}</div>
+           <div class="stat-value">${s.v}</div>
+           <div class="stat-title">${s.t}</div>
+         </div>`
+      ).join('') + '</div>';
+
+      // En çok satılan
+      const top = Object.values(perDesign).sort((a, b) => b.qty - a.qty).slice(0, 5);
+      if (!top.length) {
+        $('topDesigns').innerHTML = '<div class="empty">Bu dönemde satış yok.</div>';
+      } else {
+        $('topDesigns').innerHTML = '<ul class="list">' + top.map((d) =>
+          `<li class="list-item"><div class="li-head"><span class="li-title">${esc(d.name)}</span><span class="li-amount">${fmtNum(d.qty)} adet</span></div><div class="li-sub"><span>Ciro: ${fmtTL(d.revenue)}</span></div></li>`
+        ).join('') + '</ul>';
+      }
+
+      renderChart(inRange, start, end);
+    }
+
+    function renderChart(inRange, start, end) {
+      const labels = [];
+      const buckets = [];
+      const dayNames = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+      if (state.period === 'week') {
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(start); d.setDate(start.getDate() + i);
+          labels.push(dayNames[i]);
+          buckets.push({ d, val: 0 });
+        }
+      } else {
+        const days = new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
+        for (let i = 1; i <= days; i++) {
+          const d = new Date(start.getFullYear(), start.getMonth(), i);
+          labels.push(String(i));
+          buckets.push({ d, val: 0 });
+        }
+      }
+      inRange.forEach((sale) => {
+        const d = parseSaleDate(sale);
+        if (!d) return;
+        let idx;
+        if (state.period === 'week') {
+          idx = Math.floor((d - buckets[0].d) / 86400000);
+        } else {
+          idx = d.getDate() - 1;
+        }
+        if (idx >= 0 && idx < buckets.length) {
+          buckets[idx].val += state.metric === 'units' ? (Number(sale.quantity) || 0) : (Number(sale.sale_amount) || 0);
+        }
+      });
+      const data = buckets.map((b) => b.val);
+      const label = state.metric === 'units' ? 'Adet' : 'Ciro (TL)';
+      const barColor = state.metric === 'units' ? '#FF7A65' : '#FBD34D';
+
+      if (chart) chart.destroy();
+      const ctx = $('prodChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{ label, data, backgroundColor: barColor, borderWidth: 0, borderRadius: 10, borderSkipped: false, maxBarThickness: 34 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1C1C1E', padding: 10, cornerRadius: 12, displayColors: false, callbacks: { label: (c) => state.metric === 'units' ? `${fmtNum(c.parsed.y)} adet` : fmtTL(c.parsed.y) } } },
+          scales: {
+            x: { ticks: { color: '#8A8A8E', font: { size: 11 }, maxRotation: 0, autoSkip: true }, grid: { display: false }, border: { display: false } },
+            y: { beginAtZero: true, ticks: { color: '#8A8A8E', font: { size: 11 }, maxTicksLimit: 5 }, grid: { color: 'rgba(0,0,0,0.05)' }, border: { display: false } }
+          }
+        }
       });
     }
-    function registerServiceWorker() {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js').catch(() => {
-          // ignore if registration fails
+
+    // ===== TASARIMLAR =====
+    function renderDesigns() {
+      const host = $('designsList');
+      if (!state.designs.length) {
+        host.innerHTML = '<div class="empty">Henüz tasarım yok. “+ Ekle” ile başla.</div>';
+        return;
+      }
+      host.innerHTML = '<ul class="list">' + state.designs.map((d) => {
+        const c = costOf(d);
+        const colors = d.colors ? `<span>Renkler: ${esc(d.colors)}</span>` : '';
+        return `<li class="list-item tappable" data-design="${d.id}">
+          <div class="li-head"><span class="li-title">${esc(d.name)}</span><span class="li-amount">${fmtTL(c.unitPrice)}</span></div>
+          <div class="li-sub"><span>${fmtNum(c.unitGrams, 1)} g/adet</span><span>${fmtNum(c.unitHours, 2)} s/adet</span><span>Maliyet: ${fmtTL(c.unitCost)}</span>${colors}</div>
+          <div class="breakdown" data-bd="${d.id}" hidden>
+            <div class="row"><span>Filament</span><strong>${fmtTL(c.filament)}</strong></div>
+            <div class="row"><span>Elektrik</span><strong>${fmtTL(c.elektrik)}</strong></div>
+            <div class="row"><span>Makine</span><strong>${fmtTL(c.makine)}</strong></div>
+            <div class="row"><span>İşçilik</span><strong>${fmtTL(c.iscilik)}</strong></div>
+            <div class="row total"><span>Baskı toplamı (${c.units} adet)</span><strong>${fmtTL(c.toplam)}</strong></div>
+            <div class="row total"><span>Birim maliyet</span><strong>${fmtTL(c.unitCost)}</strong></div>
+            <div class="row total"><span>Önerilen birim fiyat</span><strong>${fmtTL(c.unitPrice)}</strong></div>
+            <div class="li-actions"><button class="button small" data-edit="${d.id}">Düzenle</button><button class="button small danger" data-del="${d.id}">Sil</button></div>
+          </div>
+        </li>`;
+      }).join('') + '</ul>';
+
+      host.querySelectorAll('.list-item.tappable').forEach((li) => {
+        li.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          const bd = li.querySelector('.breakdown');
+          if (bd) bd.hidden = !bd.hidden;
         });
+      });
+      host.querySelectorAll('[data-edit]').forEach((b) => b.addEventListener('click', () => openDesignModal(b.getAttribute('data-edit'))));
+      host.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => deleteDesign(b.getAttribute('data-del'))));
+    }
+
+    function openDesignModal(id) {
+      const d = id ? state.designs.find((x) => String(x.id) === String(id)) : null;
+      openModal(`
+        <h2>${d ? 'Tasarımı Düzenle' : 'Yeni Tasarım'}</h2>
+        <div class="grid">
+          <div class="field"><label for="m_name">İsim</label><input id="m_name" type="text" value="${d ? esc(d.name) : ''}" placeholder="Tasarım adı"></div>
+          <div class="field"><label for="m_grams">Toplam gram (bir baskı)</label><input id="m_grams" type="number" min="0" step="1" inputmode="decimal" value="${d ? esc(d.grams) : ''}"></div>
+          <div class="field"><label for="m_hours">Toplam süre (saat)</label><input id="m_hours" type="number" min="0" step="0.1" inputmode="decimal" value="${d ? esc(d.print_hours) : ''}"></div>
+          <div class="field"><label for="m_units">Plaka başına adet</label><input id="m_units" type="number" min="1" step="1" inputmode="numeric" value="${d ? esc(d.units_per_plate) : '1'}"></div>
+          <div class="field"><label for="m_colors">Renkler</label><input id="m_colors" type="text" value="${d ? esc(d.colors || '') : ''}" placeholder="ör. Siyah, Beyaz"></div>
+        </div>
+        <div class="button-row" style="margin-top:18px;">
+          <button class="button" id="m_cancel">İptal</button>
+          <button class="button primary" id="m_save">Kaydet</button>
+        </div>
+      `);
+      $('m_cancel').addEventListener('click', closeModal);
+      $('m_save').addEventListener('click', async () => {
+        const payload = {
+          name: $('m_name').value.trim(),
+          grams: Number($('m_grams').value) || 0,
+          print_hours: Number($('m_hours').value) || 0,
+          units_per_plate: Math.max(1, Number($('m_units').value) || 1),
+          colors: $('m_colors').value.trim()
+        };
+        if (!payload.name) { toast('İsim gerekli'); return; }
+        await withSaving('m_save', async () => {
+          if (d) {
+            const { error } = await sb.from('designs').update(payload).eq('id', d.id);
+            if (error) throw error;
+          } else {
+            const { error } = await sb.from('designs').insert(payload);
+            if (error) throw error;
+          }
+          closeModal();
+          toast('Kaydedildi');
+          await refresh();
+        });
+      });
+    }
+
+    async function deleteDesign(id) {
+      const d = state.designs.find((x) => String(x.id) === String(id));
+      if (!confirm(`“${d ? d.name : 'Tasarım'}” silinsin mi? İlgili satışlar etkilenebilir.`)) return;
+      try {
+        const { error } = await sb.from('designs').delete().eq('id', id);
+        if (error) throw error;
+        toast('Silindi');
+        await refresh();
+      } catch (e) { toast('Hata: ' + (e.message || e)); }
+    }
+
+    // ===== SATIŞLAR =====
+    function renderSales() {
+      const host = $('salesList');
+      if (!state.sales.length) {
+        host.innerHTML = '<div class="empty">Henüz satış yok. “+ Ekle” ile başla.</div>';
+        return;
+      }
+      host.innerHTML = '<ul class="list">' + state.sales.map((s) => {
+        const name = s.designs ? s.designs.name : 'Bilinmeyen tasarım';
+        const cust = s.customer ? `<span>${esc(s.customer)}</span>` : '';
+        const date = (s.sold_at || '').slice(0, 10);
+        return `<li class="list-item">
+          <div class="li-head"><span class="li-title">${esc(name)}</span><span class="li-amount">${fmtTL(s.sale_amount)}</span></div>
+          <div class="li-sub"><span>${fmtNum(s.quantity)} adet</span><span>${esc(date)}</span>${cust}</div>
+          <div class="li-actions"><button class="button small danger" data-delsale="${s.id}">Sil</button></div>
+        </li>`;
+      }).join('') + '</ul>';
+      host.querySelectorAll('[data-delsale]').forEach((b) => b.addEventListener('click', () => deleteSale(b.getAttribute('data-delsale'))));
+    }
+
+    function openSaleModal() {
+      if (!state.designs.length) { toast('Önce bir tasarım ekle'); return; }
+      const today = new Date().toISOString().slice(0, 10);
+      const opts = state.designs.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
+      openModal(`
+        <h2>Yeni Satış</h2>
+        <div class="grid">
+          <div class="field"><label for="s_design">Tasarım</label><select id="s_design">${opts}</select></div>
+          <div class="field"><label for="s_qty">Adet</label><input id="s_qty" type="number" min="1" step="1" inputmode="numeric" value="1"></div>
+          <div class="field"><label for="s_amount">Tutar (toplam, TL)</label><input id="s_amount" type="number" min="0" step="1" inputmode="decimal"></div>
+          <div class="field"><label for="s_customer">Müşteri (opsiyonel)</label><input id="s_customer" type="text" placeholder="İsim"></div>
+          <div class="field"><label for="s_date">Tarih</label><input id="s_date" type="date" value="${today}"></div>
+        </div>
+        <div class="button-row" style="margin-top:18px;">
+          <button class="button" id="s_cancel">İptal</button>
+          <button class="button primary" id="s_save">Kaydet</button>
+        </div>
+      `);
+
+      const autofill = () => {
+        const d = state.designs.find((x) => String(x.id) === String($('s_design').value));
+        const qty = Math.max(1, Number($('s_qty').value) || 1);
+        if (d) $('s_amount').value = round10(costOf(d).unitPrice * qty);
+      };
+      let amountTouched = false;
+      $('s_amount').addEventListener('input', () => { amountTouched = true; });
+      $('s_design').addEventListener('change', () => { if (!amountTouched) autofill(); });
+      $('s_qty').addEventListener('input', () => { if (!amountTouched) autofill(); });
+      autofill();
+
+      $('s_cancel').addEventListener('click', closeModal);
+      $('s_save').addEventListener('click', async () => {
+        const payload = {
+          design_id: $('s_design').value,
+          quantity: Math.max(1, Number($('s_qty').value) || 1),
+          sale_amount: Number($('s_amount').value) || 0,
+          customer: $('s_customer').value.trim() || null,
+          sold_at: $('s_date').value || today
+        };
+        await withSaving('s_save', async () => {
+          const { error } = await sb.from('sales').insert(payload);
+          if (error) throw error;
+          closeModal();
+          toast('Satış eklendi');
+          await refresh();
+        });
+      });
+    }
+
+    async function deleteSale(id) {
+      if (!confirm('Bu satış silinsin mi?')) return;
+      try {
+        const { error } = await sb.from('sales').delete().eq('id', id);
+        if (error) throw error;
+        toast('Silindi');
+        await refresh();
+      } catch (e) { toast('Hata: ' + (e.message || e)); }
+    }
+
+    // ===== AYARLAR =====
+    function fillSettingsForm() {
+      SETTING_KEYS.forEach((k) => { $('set_' + k).value = state.settings[k]; });
+    }
+    async function saveSettings() {
+      const rows = SETTING_KEYS.map((k) => ({ key: k, value: String(Number($('set_' + k).value) || 0) }));
+      await withSaving('saveSettingsBtn', async () => {
+        const { error } = await sb.from('settings').upsert(rows, { onConflict: 'key' });
+        if (error) throw error;
+        toast('Ayarlar kaydedildi');
+        await refresh();
+      });
+    }
+
+    // ===== Modal =====
+    function openModal(html) {
+      $('modalBox').innerHTML = html;
+      $('modalBackdrop').hidden = false;
+    }
+    function closeModal() { $('modalBackdrop').hidden = true; $('modalBox').innerHTML = ''; }
+    $('modalBackdrop').addEventListener('click', (e) => { if (e.target === $('modalBackdrop')) closeModal(); });
+
+    async function withSaving(btnId, fn) {
+      const btn = $(btnId);
+      const old = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span>'; }
+      try {
+        await fn();
+      } catch (e) {
+        toast('Hata: ' + (e.message || e));
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = old; }
       }
     }
-    loadSettings();
-    updateProfileOptions();
-    renderProfileList();
-    applySettingsToInputs();
-    initTabs();
-    attachInputListeners();
-    calculate();
-    registerServiceWorker();
+
+    // ===== Görünüm yönetimi =====
+    function showView(view) {
+      state.view = view;
+      ['summary', 'calc', 'designs', 'sales', 'settings'].forEach((v) => {
+        $('view-' + v).hidden = v !== view;
+      });
+      document.querySelectorAll('#tabs .tab').forEach((t) => t.classList.toggle('active', t.getAttribute('data-view') === view));
+    }
+
+    function renderAll() {
+      renderSummary();
+      renderDesigns();
+      renderSales();
+      fillSettingsForm();
+      fillCalcDefaults();
+      calcCompute();
+    }
+
+    async function refresh() {
+      try {
+        await loadAll();
+        renderAll();
+      } catch (e) {
+        toast('Veri hatası: ' + (e.message || e));
+      }
+    }
+
+    // ===== Başlatma =====
+    function bindUI() {
+      document.querySelectorAll('#tabs .tab').forEach((t) => t.addEventListener('click', () => showView(t.getAttribute('data-view'))));
+
+      $('periodSeg').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
+        state.period = b.getAttribute('data-period');
+        $('periodSeg').querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));
+        renderSummary();
+      }));
+      $('metricSeg').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
+        state.metric = b.getAttribute('data-metric');
+        $('metricSeg').querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));
+        renderSummary();
+      }));
+
+      $('addDesignBtn').addEventListener('click', () => openDesignModal(null));
+      $('addSaleBtn').addEventListener('click', openSaleModal);
+      $('saveSettingsBtn').addEventListener('click', saveSettings);
+
+      bindCalc();
+    }
+
+    async function start() {
+      $('headerHint').innerHTML = '<span class="spin" style="border-color:rgba(0,0,0,0.2);border-top-color:var(--coral);"></span> Yükleniyor…';
+      try {
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      } catch (e) {
+        $('headerHint').textContent = 'Supabase bağlantısı kurulamadı. URL/KEY kontrol edin.';
+        return;
+      }
+      $('app').hidden = false;
+      $('tabs').hidden = false;
+      bindUI();
+      showView('summary');
+      await refresh();
+      $('headerHint').textContent = 'Üretim, satış ve kârı tek yerden takip et.';
+    }
+
+    // ===== Şifre kapısı =====
+    function initGate() {
+      const KEY = '3dDashUnlocked';
+      const tryUnlock = () => {
+        const val = $('gateInput').value;
+        if (val === PASSWORD && PASSWORD !== '') {
+          sessionStorage.setItem(KEY, 'acik');
+          unlock();
+        } else {
+          $('gateErr').textContent = 'Şifre hatalı.';
+        }
+      };
+      const unlock = () => { $('gate').style.display = 'none'; start(); };
+
+      if (sessionStorage.getItem(KEY) === 'acik') { unlock(); return; }
+      $('gateBtn').addEventListener('click', tryUnlock);
+      $('gateInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+      $('gateInput').focus();
+    }
+
+    if (!window.supabase) {
+      $('headerHint').textContent = 'supabase-js yüklenemedi (internet?).';
+    }
+    initGate();
+
+    // PWA / çevrimdışı: service worker kaydı (göreli yol — alt dizinde de çalışır)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+  })();
   </script>
 </body>
 </html>
