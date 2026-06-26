@@ -133,10 +133,73 @@
     .calc-breakdown li { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.92rem; }
     .calc-breakdown li strong { color: var(--text); }
 
+    /* Siparişler (kanban) */
+    .orders-topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 2px 14px; }
+    .orders-title { margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+    .queue-summary { background: var(--card); border-radius: 16px; padding: 14px 18px; box-shadow: var(--shadow); margin-bottom: 16px; font-size: 0.92rem; color: var(--muted); }
+    .queue-summary .qs-big { font-weight: 800; color: var(--coral); font-size: 1.05rem; }
+    .queue-summary .qs-empty { color: var(--muted); }
+
+    .kanban { display: grid; grid-auto-flow: column; grid-auto-columns: 80vw; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+    .kanban-col { scroll-snap-align: start; background: var(--field); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 100px; align-self: start; }
+    .kcol-head { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.95rem; padding: 2px 4px; }
+    .kcol-count { background: rgba(0,0,0,0.06); color: var(--muted); border-radius: 999px; padding: 2px 10px; font-size: 0.78rem; }
+    .kempty { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 14px 4px; }
+
+    .ocard { background: var(--card); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); display: grid; gap: 8px; }
+    .ocard.overdue { border: 1.5px solid var(--danger); background: rgba(255,59,48,0.05); }
+    .ocard-name { font-weight: 700; font-size: 1rem; }
+    .ocard-no { color: var(--muted); font-weight: 600; font-size: 0.82rem; }
+    .ocard-items { color: var(--muted); font-size: 0.86rem; line-height: 1.4; }
+    .ocard-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .ocard-total { font-weight: 800; color: var(--coral); }
+    .ocard-due { font-size: 0.82rem; color: var(--muted); }
+    .ocard.overdue .ocard-due { color: var(--danger); font-weight: 700; }
+    .ocard-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+    .mini-btn { border: 1.5px solid var(--border); background: #fff; color: var(--text); padding: 7px 11px; border-radius: 999px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: box-shadow 0.2s, background 0.2s; }
+    .mini-btn:hover { box-shadow: var(--shadow); }
+    .mini-btn.fwd { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .mini-btn.danger { color: var(--danger); border-color: rgba(255,59,48,0.25); background: rgba(255,59,48,0.05); }
+    .mini-btn:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
+
+    /* Sipariş kalemi satırı (modal) */
+    .oitem-row { display: grid; grid-template-columns: 1fr 60px 84px 34px; gap: 6px; padding: 10px; background: var(--field); border-radius: 14px; margin-bottom: 8px; align-items: center; }
+    .oitem-row .oi-design { grid-column: 1 / -1; }
+    .oitem-row select, .oitem-row input { padding: 10px 9px; border-radius: 12px; font-size: 0.92rem; background: #fff; }
+    .oitem-row .oi-del { padding: 9px 0; text-align: center; }
+
+    /* Filament satırı (modal) */
+    .dfil-row { display: grid; grid-template-columns: 1fr 92px 34px; gap: 6px; padding: 8px; background: rgba(0,0,0,0.02); border-radius: 12px; margin-bottom: 6px; align-items: center; }
+    .dfil-row select, .dfil-row input { padding: 10px 9px; border-radius: 12px; font-size: 0.92rem; background: #fff; }
+    .dfil-row .df-del { padding: 9px 0; text-align: center; }
+
+    /* Filamentler */
+    .fil-summary { background: var(--card); border-radius: 16px; padding: 14px 18px; box-shadow: var(--shadow); margin-bottom: 16px; font-size: 0.9rem; display: grid; gap: 8px; }
+    .fil-summary .fs-ok { color: var(--muted); }
+    .fil-alert { line-height: 1.45; }
+    .fil-alert.crit { color: var(--danger); font-weight: 600; }
+    .fil-alert.warn { color: var(--coral); font-weight: 600; }
+    .fil-item.crit { border: 1.5px solid var(--danger); background: rgba(255,59,48,0.05); }
+    .fil-item.warn { border: 1.5px solid var(--coral); background: rgba(255,122,101,0.06); }
+    .fil-chip { font-size: 0.72rem; padding: 2px 9px; border-radius: 999px; background: rgba(0,0,0,0.06); color: var(--muted); font-weight: 600; }
+    .fil-stats { margin-top: 8px; color: var(--muted); font-size: 0.9rem; }
+    .fil-stats .neg { color: var(--danger); font-weight: 700; }
+    .fil-stats .pos { color: var(--text); font-weight: 600; }
+    .fil-thr { margin-top: 4px; color: var(--muted); font-size: 0.8rem; }
+
+    /* Varyant kartı (tasarım modalı) */
+    .variant-card { border: 1px solid var(--border); border-radius: 16px; padding: 12px; margin-bottom: 10px; background: #fff; display: grid; gap: 8px; }
+    .vc-top { display: flex; gap: 8px; align-items: center; }
+    .vc-top .v-name { flex: 1; }
+    .variant-card .v-name, .variant-card .v-price { padding: 11px 12px; border-radius: 12px; font-size: 0.95rem; }
+    .variant-card .v-info { color: var(--muted); font-size: 0.82rem; }
+    .variant-card .v-del { flex: 0 0 auto; }
+
     /* Alt sekme barı — mobil: alta yapışık, tam genişlik, 5 eşit sekme */
-    .tabs { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; padding: 6px 2px calc(6px + env(safe-area-inset-bottom)); background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); border-top: 1px solid var(--border); box-shadow: 0 -4px 18px rgba(0,0,0,0.05); z-index: 30; }
-    .tab { border: none; background: transparent; color: var(--muted); padding: 5px 1px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: 700; font-size: 0.62rem; cursor: pointer; transition: color 0.2s; }
-    .tab-ico { font-size: 1.12rem; line-height: 1; }
+    .tabs { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; padding: 6px 1px calc(6px + env(safe-area-inset-bottom)); background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); border-top: 1px solid var(--border); box-shadow: 0 -4px 18px rgba(0,0,0,0.05); z-index: 30; }
+    .tab { border: none; background: transparent; color: var(--muted); padding: 5px 0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: 700; font-size: 0.58rem; cursor: pointer; transition: color 0.2s; overflow: hidden; }
+    .tab-ico { font-size: 1.05rem; line-height: 1; }
     .tab-lbl { white-space: nowrap; }
     .tab.active { color: var(--coral); }
     .tab.active .tab-ico { transform: scale(1.05); }
@@ -201,12 +264,15 @@
       .stat.featured { grid-column: auto; }
       .stat.featured .stat-value { font-size: 1.5rem; }
 
+      /* Siparişler: 5 kolon yan yana */
+      .kanban { grid-auto-columns: 1fr; overflow-x: visible; }
+
       /* Hesaplayıcı: girdiler solda, fiyatlar sağda */
       #view-calc:not([hidden]) { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
       #view-calc > * { margin-top: 0; }
 
       /* Diğer sekmeler geniş alanı kullansın */
-      #designsList .list, #salesList .list { grid-template-columns: repeat(2, 1fr); align-items: start; }
+      #designsList .list { grid-template-columns: repeat(2, 1fr); align-items: start; }
       #view-settings #settingsForm { grid-template-columns: repeat(3, 1fr); }
       #view-settings .footnote { grid-column: 1 / -1; }
     }
@@ -274,6 +340,16 @@
       </div>
     </section>
 
+    <!-- SİPARİŞLER -->
+    <section id="view-orders" class="view" hidden>
+      <div class="orders-topbar">
+        <h2 class="orders-title">Siparişler</h2>
+        <button class="button primary small" id="addOrderBtn">+ Sipariş</button>
+      </div>
+      <div class="queue-summary" id="queueSummary"></div>
+      <div class="kanban" id="kanban"></div>
+    </section>
+
     <!-- HESAPLAYICI -->
     <section id="view-calc" class="view" hidden>
       <div class="panel calc-inputs">
@@ -338,14 +414,14 @@
       </div>
     </section>
 
-    <!-- SATIŞLAR -->
-    <section id="view-sales" class="view" hidden>
-      <div class="panel">
-        <div class="section-title"><span>Satışlar</span>
-          <button class="button primary small" id="addSaleBtn">+ Ekle</button>
-        </div>
-        <div id="salesList"></div>
+    <!-- FİLAMENTLER -->
+    <section id="view-filaments" class="view" hidden>
+      <div class="orders-topbar">
+        <h2 class="orders-title">Filamentler</h2>
+        <button class="button primary small" id="addFilamentBtn">+ Filament</button>
       </div>
+      <div class="fil-summary" id="filSummary"></div>
+      <div id="filamentsList"></div>
     </section>
 
     <!-- AYARLAR -->
@@ -368,9 +444,10 @@
 
   <nav class="tabs" id="tabs" hidden>
     <button class="tab active" data-view="summary"><span class="tab-ico">📊</span><span class="tab-lbl">Özet</span></button>
+    <button class="tab" data-view="orders"><span class="tab-ico">📋</span><span class="tab-lbl">Sipariş</span></button>
     <button class="tab" data-view="calc"><span class="tab-ico">🧮</span><span class="tab-lbl">Hesap</span></button>
     <button class="tab" data-view="designs"><span class="tab-ico">🧩</span><span class="tab-lbl">Tasarımlar</span></button>
-    <button class="tab" data-view="sales"><span class="tab-ico">🧾</span><span class="tab-lbl">Satışlar</span></button>
+    <button class="tab" data-view="filaments"><span class="tab-ico">🧵</span><span class="tab-lbl">Filament</span></button>
     <button class="tab" data-view="settings"><span class="tab-ico">⚙️</span><span class="tab-lbl">Ayarlar</span></button>
   </nav>
 
@@ -409,7 +486,8 @@
 
     const state = {
       designs: [],
-      sales: [],
+      orders: [],
+      filaments: [],
       settings: { ...SETTING_DEFAULTS },
       period: 'week',
       metric: 'units',
@@ -433,8 +511,14 @@
       const unitCost = toplam / units;
       const unitGrams = grams / units;
       const unitHours = hours / units;
-      const unitPrice = round10(unitCost * Number(s.profit_multiplier));
-      return { filament, elektrik, makine, iscilik, toplam, unitCost, unitGrams, unitHours, unitPrice, units };
+      return { filament, elektrik, makine, iscilik, toplam, unitCost, unitGrams, unitHours, units };
+    }
+
+    // Tasarım seviyesinde fiyat (Satışlar için): varyantlar artık asıl kaynak, ilk varyanta düş
+    function designPrice(d) {
+      if (d && d.price) return Number(d.price) || 0;
+      const v = d && d.variants && d.variants[0];
+      return v ? variantPrice(v) : 0;
     }
 
     // ===== Hesaplayıcı (tek seferlik baskı) =====
@@ -522,25 +606,28 @@
       end.setHours(23, 59, 59, 999);
       return { start, end };
     }
-    function parseSaleDate(s) {
-      // sold_at: 'YYYY-MM-DD'
-      const d = new Date((s.sold_at || s.created_at || '').slice(0, 10) + 'T00:00:00');
+    function parseDateStr(s) {
+      // 'YYYY-MM-DD'
+      const d = new Date((s || '').slice(0, 10) + 'T00:00:00');
       return isNaN(d) ? null : d;
     }
 
     // ===== Veri çekme =====
     async function loadAll() {
-      const [dRes, sRes, setRes] = await Promise.all([
-        sb.from('designs').select('*').order('created_at', { ascending: false }),
-        sb.from('sales').select('*, designs(*)').order('sold_at', { ascending: false }).order('created_at', { ascending: false }),
-        sb.from('settings').select('*')
+      const [dRes, setRes, oRes, fRes] = await Promise.all([
+        sb.from('designs').select('*, variants(*, variant_filaments(*))').order('created_at', { ascending: false }),
+        sb.from('settings').select('*'),
+        sb.from('orders').select('*, order_items(*, designs(*), variants(*, variant_filaments(*)))').order('created_at', { ascending: false }),
+        sb.from('filaments').select('*')
       ]);
       if (dRes.error) throw dRes.error;
-      if (sRes.error) throw sRes.error;
       if (setRes.error) throw setRes.error;
+      if (oRes.error) throw oRes.error;
+      if (fRes.error) throw fRes.error;
 
       state.designs = dRes.data || [];
-      state.sales = sRes.data || [];
+      state.orders = oRes.data || [];
+      state.filaments = fRes.data || [];
 
       const settings = { ...SETTING_DEFAULTS };
       (setRes.data || []).forEach((row) => {
@@ -552,33 +639,45 @@
     // ===== ÖZET =====
     function renderSummary() {
       const { start, end } = periodRange(state.period);
-      const inRange = state.sales.filter((s) => {
-        const d = parseSaleDate(s);
+      // Tamamlanan satış = 'kargolandi' siparişler; tarih olarak ordered_at
+      const inRange = (state.orders || []).filter((o) => {
+        if (o.status !== 'kargolandi') return false;
+        const d = parseDateStr(o.ordered_at || o.created_at);
         return d && d >= start && d <= end;
       });
 
       let units = 0, grams = 0, machineHours = 0, revenue = 0, cost = 0;
-      const perDesign = {};
-      inRange.forEach((sale) => {
-        const design = sale.designs;
-        const qty = Number(sale.quantity) || 0;
-        const amt = Number(sale.sale_amount) || 0;
-        units += qty;
-        revenue += amt;
-        if (design) {
-          const c = costOf(design);
-          grams += qty * c.unitGrams;
-          machineHours += qty * c.unitHours;
-          cost += qty * c.unitCost;
-          const key = design.id;
-          if (!perDesign[key]) perDesign[key] = { name: design.name, qty: 0, revenue: 0 };
-          perDesign[key].qty += qty;
-          perDesign[key].revenue += amt;
-        } else {
-          if (!perDesign['_'] ) perDesign['_'] = { name: 'Bilinmeyen', qty: 0, revenue: 0 };
-          perDesign['_'].qty += qty;
-          perDesign['_'].revenue += amt;
-        }
+      const perKey = {};
+      const chartData = [];
+      inRange.forEach((o) => {
+        const od = parseDateStr(o.ordered_at || o.created_at);
+        let oUnits = 0, oRevenue = 0;
+        (o.order_items || []).forEach((it) => {
+          const design = it.designs;
+          const variant = it.variants;
+          const qty = Number(it.quantity) || 0;
+          const amt = (Number(it.unit_price) || 0) * qty;
+          units += qty;
+          revenue += amt;
+          oUnits += qty;
+          oRevenue += amt;
+          if (design && variant) {
+            const vc = variantCost(design, variant);
+            const u = Math.max(1, Number(design.units_per_plate) || 1);
+            grams += qty * variantGrams(variant);
+            machineHours += qty * (Number(design.print_hours) || 0) / u;
+            cost += qty * vc.unitCost;
+            const key = `${design.id}__${variant.id}`;
+            if (!perKey[key]) perKey[key] = { name: `${design.name} (${variant.name})`, qty: 0, revenue: 0 };
+            perKey[key].qty += qty;
+            perKey[key].revenue += amt;
+          } else {
+            if (!perKey['_']) perKey['_'] = { name: 'Bilinmeyen', qty: 0, revenue: 0 };
+            perKey['_'].qty += qty;
+            perKey['_'].revenue += amt;
+          }
+        });
+        chartData.push({ d: od, units: oUnits, revenue: oRevenue });
       });
       const profit = revenue - cost;
 
@@ -598,20 +697,20 @@
          </div>`
       ).join('') + '</div>';
 
-      // En çok satılan
-      const top = Object.values(perDesign).sort((a, b) => b.qty - a.qty).slice(0, 5);
+      // En çok satılan (tasarım/varyant bazında)
+      const top = Object.values(perKey).sort((a, b) => b.qty - a.qty).slice(0, 5);
       if (!top.length) {
-        $('topDesigns').innerHTML = '<div class="empty">Bu dönemde satış yok.</div>';
+        $('topDesigns').innerHTML = '<div class="empty">Bu dönemde tamamlanan satış yok.</div>';
       } else {
         $('topDesigns').innerHTML = '<ul class="list">' + top.map((d) =>
           `<li class="list-item"><div class="li-head"><span class="li-title">${esc(d.name)}</span><span class="li-amount">${fmtNum(d.qty)} adet</span></div><div class="li-sub"><span>Ciro: ${fmtTL(d.revenue)}</span></div></li>`
         ).join('') + '</ul>';
       }
 
-      renderChart(inRange, start, end);
+      renderChart(chartData, start, end);
     }
 
-    function renderChart(inRange, start, end) {
+    function renderChart(chartData, start, end) {
       const labels = [];
       const buckets = [];
       const dayNames = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
@@ -629,8 +728,8 @@
           buckets.push({ d, val: 0 });
         }
       }
-      inRange.forEach((sale) => {
-        const d = parseSaleDate(sale);
+      chartData.forEach((row) => {
+        const d = row.d;
         if (!d) return;
         let idx;
         if (state.period === 'week') {
@@ -639,7 +738,7 @@
           idx = d.getDate() - 1;
         }
         if (idx >= 0 && idx < buckets.length) {
-          buckets[idx].val += state.metric === 'units' ? (Number(sale.quantity) || 0) : (Number(sale.sale_amount) || 0);
+          buckets[idx].val += state.metric === 'units' ? row.units : row.revenue;
         }
       });
       const data = buckets.map((b) => b.val);
@@ -670,19 +769,21 @@
         return;
       }
       host.innerHTML = '<ul class="list">' + state.designs.map((d) => {
-        const c = costOf(d);
-        const colors = d.colors ? `<span>Renkler: ${esc(d.colors)}</span>` : '';
+        const variants = (d.variants || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        const variantRows = variants.length
+          ? variants.map((v) => {
+              const vc = variantCost(d, v);
+              const price = variantPrice(v);
+              const profit = price - vc.unitCost;
+              const colorText = variantColorsText(v);
+              return `<div class="row"><span><strong>${esc(v.name || '—')}</strong> — ${fmtTL(price)}${colorText ? ` <span class="vrow-colors">(${esc(colorText)})</span>` : ''}</span><span class="vrow-profit">kâr ${fmtTL(profit)}</span></div>`;
+            }).join('')
+          : '<div class="row"><span class="vrow-colors">Varyant yok</span></div>';
         return `<li class="list-item tappable" data-design="${d.id}">
-          <div class="li-head"><span class="li-title">${esc(d.name)}</span><span class="li-amount">${fmtTL(c.unitPrice)}</span></div>
-          <div class="li-sub"><span>${fmtNum(c.unitGrams, 1)} g/adet</span><span>${fmtNum(c.unitHours, 2)} s/adet</span><span>Maliyet: ${fmtTL(c.unitCost)}</span>${colors}</div>
+          <div class="li-head"><span class="li-title">${esc(d.name)}</span><span class="li-amount">${variants.length} varyant</span></div>
+          <div class="li-sub"><span>${fmtNum(d.print_hours || 0, 2)} saat / baskı</span><span>${fmtNum(Math.max(1, d.units_per_plate || 1), 0)} adet / plaka</span></div>
           <div class="breakdown" data-bd="${d.id}" hidden>
-            <div class="row"><span>Filament</span><strong>${fmtTL(c.filament)}</strong></div>
-            <div class="row"><span>Elektrik</span><strong>${fmtTL(c.elektrik)}</strong></div>
-            <div class="row"><span>Makine</span><strong>${fmtTL(c.makine)}</strong></div>
-            <div class="row"><span>İşçilik</span><strong>${fmtTL(c.iscilik)}</strong></div>
-            <div class="row total"><span>Baskı toplamı (${c.units} adet)</span><strong>${fmtTL(c.toplam)}</strong></div>
-            <div class="row total"><span>Birim maliyet</span><strong>${fmtTL(c.unitCost)}</strong></div>
-            <div class="row total"><span>Önerilen birim fiyat</span><strong>${fmtTL(c.unitPrice)}</strong></div>
+            ${variantRows}
             <div class="li-actions"><button class="button small" data-edit="${d.id}">Düzenle</button><button class="button small danger" data-del="${d.id}">Sil</button></div>
           </div>
         </li>`;
@@ -699,39 +800,167 @@
       host.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => deleteDesign(b.getAttribute('data-del'))));
     }
 
+    // ===== Varyant yardımcıları =====
+    function variantGrams(v) {
+      return (v.variant_filaments || []).reduce((s, r) => s + (Number(r.grams) || 0), 0);
+    }
+    function variantPrice(v) { return Number(v && v.price) || 0; }
+    function variantCost(design, v) {
+      return costOf({ grams: variantGrams(v), print_hours: design.print_hours, units_per_plate: design.units_per_plate });
+    }
+    function variantColorsText(v) {
+      const rows = (v.variant_filaments || []).slice().sort((a, b) => (Number(b.grams) || 0) - (Number(a.grams) || 0));
+      if (!rows.length) return '';
+      return rows.map((r) => `${r.color || '—'} ${fmtNum(r.grams, 0)}g`).join(' · ');
+    }
+
     function openDesignModal(id) {
       const d = id ? state.designs.find((x) => String(x.id) === String(id)) : null;
+      const colorVals = [...new Set((state.filaments || []).map((f) => f.color).filter(Boolean))];
+      const colorOpts = (sel) => {
+        const vals = sel && !colorVals.includes(sel) ? [sel, ...colorVals] : colorVals;
+        return ['<option value="">Renk seç</option>']
+          .concat(vals.map((c) => `<option value="${esc(c)}" ${sel === c ? 'selected' : ''}>${esc(c)}</option>`))
+          .join('');
+      };
+
       openModal(`
         <h2>${d ? 'Tasarımı Düzenle' : 'Yeni Tasarım'}</h2>
         <div class="grid">
           <div class="field"><label for="m_name">İsim</label><input id="m_name" type="text" value="${d ? esc(d.name) : ''}" placeholder="Tasarım adı"></div>
-          <div class="field"><label for="m_grams">Toplam gram (bir baskı)</label><input id="m_grams" type="number" min="0" step="1" inputmode="decimal" value="${d ? esc(d.grams) : ''}"></div>
-          <div class="field"><label for="m_hours">Toplam süre (saat)</label><input id="m_hours" type="number" min="0" step="0.1" inputmode="decimal" value="${d ? esc(d.print_hours) : ''}"></div>
-          <div class="field"><label for="m_units">Plaka başına adet</label><input id="m_units" type="number" min="1" step="1" inputmode="numeric" value="${d ? esc(d.units_per_plate) : '1'}"></div>
-          <div class="field"><label for="m_colors">Renkler</label><input id="m_colors" type="text" value="${d ? esc(d.colors || '') : ''}" placeholder="ör. Siyah, Beyaz"></div>
+          <div class="button-row">
+            <div class="field"><label for="m_hours">Baskı süresi (saat)</label><input id="m_hours" type="number" min="0" step="0.1" inputmode="decimal" value="${d ? esc(d.print_hours) : ''}"></div>
+            <div class="field"><label for="m_units">Plaka başına adet</label><input id="m_units" type="number" min="1" step="1" inputmode="numeric" value="${d ? esc(d.units_per_plate) : '1'}"></div>
+          </div>
+          <div class="field">
+            <label>Varyantlar</label>
+            <div id="m_variants"></div>
+            <button class="button small" id="m_addvariant" type="button" style="margin-top:8px;">+ Varyant ekle</button>
+          </div>
         </div>
         <div class="button-row" style="margin-top:18px;">
           <button class="button" id="m_cancel">İptal</button>
           <button class="button primary" id="m_save">Kaydet</button>
         </div>
       `);
+
+      const variantsHost = $('m_variants');
+
+      const recomputeAll = () => variantsHost.querySelectorAll('.variant-card').forEach((c) => { if (c._recompute) c._recompute(); });
+
+      const addVariant = (vData) => {
+        const card = document.createElement('div');
+        card.className = 'variant-card';
+        card.innerHTML = `
+          <div class="vc-top">
+            <input class="v-name" type="text" placeholder="Varyant adı (ör. Siyah-Kırmızı)" value="${vData && vData.name ? esc(vData.name) : ''}">
+            <button class="mini-btn danger v-del" type="button" aria-label="Varyantı sil">Sil</button>
+          </div>
+          <input class="v-price" type="number" min="0" step="1" inputmode="decimal" placeholder="Satış fiyatı (TL)" value="${vData && vData.price != null && vData.price !== '' ? esc(vData.price) : ''}">
+          <div class="v-fils"></div>
+          <button class="button small v-addfil" type="button">+ Filament ekle</button>
+          <div class="v-info value-label"></div>
+        `;
+        variantsHost.appendChild(card);
+        const filsHost = card.querySelector('.v-fils');
+        const info = card.querySelector('.v-info');
+        const recomputeCard = () => {
+          const sum = [...filsHost.querySelectorAll('.dfil-row')].reduce((s, r) => s + (Number(r.querySelector('.df-grams').value) || 0), 0);
+          const vc = costOf({ grams: sum, print_hours: Number($('m_hours').value) || 0, units_per_plate: Math.max(1, Number($('m_units').value) || 1) });
+          const price = Number(card.querySelector('.v-price').value) || 0;
+          info.textContent = `Toplam ${fmtNum(sum, 0)}g · birim maliyet ${fmtTL(vc.unitCost)} · kâr ${fmtTL(price - vc.unitCost)}`;
+        };
+        card._recompute = recomputeCard;
+
+        const addFil = (color = '', grams = '') => {
+          const row = document.createElement('div');
+          row.className = 'dfil-row';
+          row.innerHTML = `
+            <select class="df-color">${colorOpts(color)}</select>
+            <input class="df-grams" type="number" min="0" step="1" inputmode="decimal" value="${grams === '' ? '' : esc(grams)}" placeholder="gram" aria-label="Gram">
+            <button class="mini-btn danger df-del" type="button" aria-label="Kaldır">×</button>
+          `;
+          filsHost.appendChild(row);
+          row.querySelector('.df-grams').addEventListener('input', recomputeCard);
+          row.querySelector('.df-del').addEventListener('click', () => {
+            if (filsHost.children.length > 1) { row.remove(); recomputeCard(); }
+            else toast('Her varyantta en az bir filament gerekli');
+          });
+        };
+
+        const fils = vData && vData.fils && vData.fils.length ? vData.fils : [{ color: '', grams: '' }];
+        fils.forEach((f) => addFil(f.color || '', f.grams != null ? f.grams : ''));
+
+        card.querySelector('.v-addfil').addEventListener('click', () => addFil());
+        card.querySelector('.v-price').addEventListener('input', recomputeCard);
+        card.querySelector('.v-del').addEventListener('click', () => {
+          if (variantsHost.children.length > 1) card.remove();
+          else toast('En az bir varyant gerekli');
+        });
+        recomputeCard();
+      };
+
+      const existing = d ? (d.variants || []) : [];
+      if (existing.length) {
+        existing.forEach((v) => addVariant({ name: v.name, price: v.price, fils: (v.variant_filaments || []).map((f) => ({ color: f.color, grams: f.grams })) }));
+      } else {
+        addVariant();
+      }
+
+      $('m_hours').addEventListener('input', recomputeAll);
+      $('m_units').addEventListener('input', recomputeAll);
+      $('m_addvariant').addEventListener('click', () => addVariant());
       $('m_cancel').addEventListener('click', closeModal);
       $('m_save').addEventListener('click', async () => {
-        const payload = {
-          name: $('m_name').value.trim(),
-          grams: Number($('m_grams').value) || 0,
+        const name = $('m_name').value.trim();
+        if (!name) { toast('İsim gerekli'); return; }
+        const designPayload = {
+          name,
           print_hours: Number($('m_hours').value) || 0,
-          units_per_plate: Math.max(1, Number($('m_units').value) || 1),
-          colors: $('m_colors').value.trim()
+          units_per_plate: Math.max(1, Number($('m_units').value) || 1)
         };
-        if (!payload.name) { toast('İsim gerekli'); return; }
+
+        const variants = [];
+        for (const card of variantsHost.querySelectorAll('.variant-card')) {
+          const vname = card.querySelector('.v-name').value.trim();
+          if (!vname) { toast('Varyant adı gerekli'); return; }
+          const priceRaw = card.querySelector('.v-price').value.trim();
+          if (priceRaw === '') { toast(`“${vname}” için satış fiyatı gerekli`); return; }
+          const price = Number(priceRaw);
+          if (!(price >= 0)) { toast(`“${vname}” için geçerli fiyat gir`); return; }
+          const fils = [...card.querySelectorAll('.dfil-row')].map((r) => ({
+            color: r.querySelector('.df-color').value,
+            grams: Number(r.querySelector('.df-grams').value) || 0
+          })).filter((f) => f.color);
+          if (!fils.length) { toast(`“${vname}” için en az bir filament seç`); return; }
+          const seen = new Set();
+          for (const f of fils) {
+            if (seen.has(f.color)) { toast(`“${vname}”: aynı renk iki kez (${f.color})`); return; }
+            seen.add(f.color);
+          }
+          variants.push({ name: vname, price, fils });
+        }
+        if (!variants.length) { toast('En az bir varyant ekle'); return; }
+
         await withSaving('m_save', async () => {
+          let designId;
           if (d) {
-            const { error } = await sb.from('designs').update(payload).eq('id', d.id);
+            const { error } = await sb.from('designs').update(designPayload).eq('id', d.id);
             if (error) throw error;
+            designId = d.id;
+            const { error: delErr } = await sb.from('variants').delete().eq('design_id', designId);
+            if (delErr) throw delErr;
           } else {
-            const { error } = await sb.from('designs').insert(payload);
+            const { data, error } = await sb.from('designs').insert(designPayload).select().single();
             if (error) throw error;
+            designId = data.id;
+          }
+          for (const v of variants) {
+            const { data: vd, error: ve } = await sb.from('variants').insert({ design_id: designId, name: v.name, price: v.price }).select().single();
+            if (ve) throw ve;
+            const filPayload = v.fils.map((f) => ({ variant_id: vd.id, color: f.color, grams: f.grams }));
+            const { error: fe } = await sb.from('variant_filaments').insert(filPayload);
+            if (fe) throw fe;
           }
           closeModal();
           toast('Kaydedildi');
@@ -742,7 +971,7 @@
 
     async function deleteDesign(id) {
       const d = state.designs.find((x) => String(x.id) === String(id));
-      if (!confirm(`“${d ? d.name : 'Tasarım'}” silinsin mi? İlgili satışlar etkilenebilir.`)) return;
+      if (!confirm(`“${d ? d.name : 'Tasarım'}” silinsin mi? İlgili siparişler etkilenebilir.`)) return;
       try {
         const { error } = await sb.from('designs').delete().eq('id', id);
         if (error) throw error;
@@ -751,79 +980,501 @@
       } catch (e) { toast('Hata: ' + (e.message || e)); }
     }
 
-    // ===== SATIŞLAR =====
-    function renderSales() {
-      const host = $('salesList');
-      if (!state.sales.length) {
-        host.innerHTML = '<div class="empty">Henüz satış yok. “+ Ekle” ile başla.</div>';
-        return;
-      }
-      host.innerHTML = '<ul class="list">' + state.sales.map((s) => {
-        const name = s.designs ? s.designs.name : 'Bilinmeyen tasarım';
-        const cust = s.customer ? `<span>${esc(s.customer)}</span>` : '';
-        const date = (s.sold_at || '').slice(0, 10);
-        return `<li class="list-item">
-          <div class="li-head"><span class="li-title">${esc(name)}</span><span class="li-amount">${fmtTL(s.sale_amount)}</span></div>
-          <div class="li-sub"><span>${fmtNum(s.quantity)} adet</span><span>${esc(date)}</span>${cust}</div>
-          <div class="li-actions"><button class="button small danger" data-delsale="${s.id}">Sil</button></div>
-        </li>`;
-      }).join('') + '</ul>';
-      host.querySelectorAll('[data-delsale]').forEach((b) => b.addEventListener('click', () => deleteSale(b.getAttribute('data-delsale'))));
+    // ===== SİPARİŞLER (kanban) =====
+    const STATUSES = [
+      ['sirada', 'Sırada'],
+      ['basiliyor', 'Basılıyor'],
+      ['baski_bitti', 'Baskı Bitti'],
+      ['hazir', 'Hazır'],
+      ['kargolandi', 'Kargolandı']
+    ];
+    const todayStr = () => new Date().toISOString().slice(0, 10);
+
+    function orderHours(o) {
+      return (o.order_items || []).reduce((sum, it) => {
+        const d = it.designs;
+        if (!d) return sum;
+        const u = Math.max(1, Number(d.units_per_plate) || 1);
+        return sum + (Number(it.quantity) || 0) * (Number(d.print_hours) || 0) / u;
+      }, 0);
+    }
+    function orderTotal(o) {
+      return (o.order_items || []).reduce((s, it) => s + (Number(it.unit_price) || 0) * (Number(it.quantity) || 0), 0);
+    }
+    function orderItemsSummary(o) {
+      const items = o.order_items || [];
+      if (!items.length) return '—';
+      return items.map((it) => {
+        const name = it.designs ? it.designs.name : '?';
+        const vname = it.variants ? ` (${it.variants.name})` : '';
+        return `${fmtNum(it.quantity)}× ${name}${vname}`;
+      }).join(', ');
+    }
+    function isOverdue(o) {
+      return !!(o.due_date && o.due_date <= todayStr());
     }
 
-    function openSaleModal() {
+    function renderOrders() {
+      const orders = state.orders || [];
+      const printing = orders.find((o) => o.status === 'basiliyor');
+      const queued = orders.filter((o) => o.status === 'sirada').sort((a, b) => (Number(a.queue_position) || 0) - (Number(b.queue_position) || 0));
+      const queueHours = queued.reduce((s, o) => s + orderHours(o), 0);
+      const printingLeft = printing ? orderHours(printing) : 0;
+      const totalHours = queueHours + printingLeft;
+
+      if (!printing && !queued.length) {
+        $('queueSummary').innerHTML = '<span class="qs-empty">Kuyruk boş — bekleyen veya basılan sipariş yok.</span>';
+      } else {
+        $('queueSummary').innerHTML = `🕒 Tahmini kuyruk bitişi: <span class="qs-big">${fmtNum(totalHours, 1)} saat</span> · ${queued.length} sipariş sırada${printing ? ' · 1 basılıyor' : ''}`;
+      }
+
+      $('kanban').innerHTML = STATUSES.map(([st, label]) => {
+        let list = orders.filter((o) => o.status === st);
+        if (st === 'sirada') {
+          list = queued;
+        } else {
+          list = list.sort((a, b) => (a.due_date || '9999').localeCompare(b.due_date || '9999') || (a.created_at || '').localeCompare(b.created_at || ''));
+        }
+        const cards = list.length
+          ? list.map((o, i) => orderCardHTML(o, st, i, list.length)).join('')
+          : '<div class="kempty">—</div>';
+        return `<div class="kanban-col"><div class="kcol-head"><span>${label}</span><span class="kcol-count">${list.length}</span></div>${cards}</div>`;
+      }).join('');
+
+      $('kanban').querySelectorAll('[data-adv]').forEach((b) => b.addEventListener('click', () => advanceOrder(b.getAttribute('data-adv'), Number(b.getAttribute('data-dir')))));
+      $('kanban').querySelectorAll('[data-move]').forEach((b) => b.addEventListener('click', () => moveQueue(b.getAttribute('data-move'), Number(b.getAttribute('data-mdir')))));
+      $('kanban').querySelectorAll('[data-editorder]').forEach((b) => b.addEventListener('click', () => openOrderModal(b.getAttribute('data-editorder'))));
+      $('kanban').querySelectorAll('[data-delorder]').forEach((b) => b.addEventListener('click', () => deleteOrder(b.getAttribute('data-delorder'))));
+    }
+
+    function orderCardHTML(o, st, i, count) {
+      const idx = STATUSES.findIndex((s) => s[0] === st);
+      const canBack = idx > 0;
+      const canFwd = idx < STATUSES.length - 1;
+      const overdue = isOverdue(o);
+      const due = o.due_date ? `<span class="ocard-due">Teslim: ${esc(o.due_date)}</span>` : '';
+      const no = o.order_no ? ` <span class="ocard-no">#${esc(o.order_no)}</span>` : '';
+      const queueArrows = st === 'sirada'
+        ? `<button class="mini-btn" data-move="${o.id}" data-mdir="-1" ${i === 0 ? 'disabled' : ''}>↑</button><button class="mini-btn" data-move="${o.id}" data-mdir="1" ${i === count - 1 ? 'disabled' : ''}>↓</button>`
+        : '';
+      return `<div class="ocard ${overdue ? 'overdue' : ''}">
+        <div class="ocard-name">${esc(o.customer_name || '—')}${no}</div>
+        <div class="ocard-items">${esc(orderItemsSummary(o))}</div>
+        <div class="ocard-meta"><span class="ocard-total">${fmtTL(orderTotal(o))}</span>${due}</div>
+        <div class="ocard-actions">
+          ${queueArrows}
+          ${canBack ? `<button class="mini-btn" data-adv="${o.id}" data-dir="-1">← Geri</button>` : ''}
+          ${canFwd ? `<button class="mini-btn fwd" data-adv="${o.id}" data-dir="1">İleri →</button>` : ''}
+          <button class="mini-btn" data-editorder="${o.id}">Düzenle</button>
+          <button class="mini-btn danger" data-delorder="${o.id}">Sil</button>
+        </div>
+      </div>`;
+    }
+
+    // 'baski_bitti' ve sonrası = stok düşülmüş olmalı (eşik indeksi 2)
+    const DEDUCT_IDX = STATUSES.findIndex((s) => s[0] === 'baski_bitti');
+
+    // Bir siparişin renk bazında toplam filament tüketimi (kalemler × varyant kırılımı)
+    function orderFilamentUsage(o) {
+      const map = {};
+      (o.order_items || []).forEach((it) => {
+        const qty = Number(it.quantity) || 0;
+        const v = it.variants;
+        if (!v) return;
+        (v.variant_filaments || []).forEach((vf) => {
+          if (!vf.color) return;
+          map[vf.color] = (map[vf.color] || 0) + qty * (Number(vf.grams) || 0);
+        });
+      });
+      return map;
+    }
+
+    // sign = -1 düş (baski_bitti), +1 iade (geri al). Yetersiz olsa eksiye düşer, engellemez.
+    async function applyStockChange(o, sign) {
+      const usage = orderFilamentUsage(o);
+      const negatives = [];
+      for (const color of Object.keys(usage)) {
+        const fil = (state.filaments || []).find((f) => f.color === color);
+        if (!fil) continue; // eşleşen renk kaydı yoksa atla
+        const next = (Number(fil.grams_remaining) || 0) + sign * usage[color];
+        const { error } = await sb.from('filaments').update({ grams_remaining: next }).eq('id', fil.id);
+        if (error) throw error;
+        if (sign < 0 && next < 0) negatives.push(color);
+      }
+      return negatives;
+    }
+
+    async function advanceOrder(id, dir) {
+      const o = state.orders.find((x) => String(x.id) === String(id));
+      if (!o) return;
+      const idx = STATUSES.findIndex((s) => s[0] === o.status);
+      const ni = idx + dir;
+      if (ni < 0 || ni >= STATUSES.length) return;
+      const next = STATUSES[ni][0];
+      if (next === 'basiliyor') {
+        const busy = state.orders.find((x) => x.status === 'basiliyor' && String(x.id) !== String(id));
+        if (busy) { toast(`Zaten basılan bir sipariş var: ${busy.customer_name || ''}`); return; }
+      }
+      const wasDeducted = !!o.stock_deducted;
+      const crossingDown = idx < DEDUCT_IDX && ni >= DEDUCT_IDX; // baski_bitti'ye giriş → düş
+      const crossingUp = idx >= DEDUCT_IDX && ni < DEDUCT_IDX;   // baski_bitti'den çıkış → iade
+      try {
+        const update = { status: next };
+        let negatives = [];
+        if (crossingDown && !wasDeducted) {
+          negatives = await applyStockChange(o, -1);
+          update.stock_deducted = true;
+        } else if (crossingUp && wasDeducted) {
+          await applyStockChange(o, 1);
+          update.stock_deducted = false;
+        }
+        const { error } = await sb.from('orders').update(update).eq('id', id);
+        if (error) throw error;
+        if (negatives.length) toast(`Stok düşüldü — ${negatives.join(', ')} eksiye düştü`);
+        await refresh();
+      } catch (e) { toast('Hata: ' + (e.message || e)); }
+    }
+
+    async function moveQueue(id, dir) {
+      const queued = state.orders.filter((o) => o.status === 'sirada').sort((a, b) => (Number(a.queue_position) || 0) - (Number(b.queue_position) || 0));
+      const i = queued.findIndex((o) => String(o.id) === String(id));
+      const j = i + dir;
+      if (i < 0 || j < 0 || j >= queued.length) return;
+      const a = queued[i], b = queued[j];
+      // queue_position eşit/boşsa indekse göre normalize et
+      let posA = Number(a.queue_position) || (i + 1);
+      let posB = Number(b.queue_position) || (j + 1);
+      if (posA === posB) { posA = i + 1; posB = j + 1; }
+      try {
+        const [r1, r2] = await Promise.all([
+          sb.from('orders').update({ queue_position: posB }).eq('id', a.id),
+          sb.from('orders').update({ queue_position: posA }).eq('id', b.id)
+        ]);
+        if (r1.error) throw r1.error;
+        if (r2.error) throw r2.error;
+        await refresh();
+      } catch (e) { toast('Hata: ' + (e.message || e)); }
+    }
+
+    async function deleteOrder(id) {
+      const o = state.orders.find((x) => String(x.id) === String(id));
+      if (!confirm(`“${o ? (o.customer_name || 'Sipariş') : 'Sipariş'}” silinsin mi? Kalemleri de silinir.`)) return;
+      try {
+        const { error } = await sb.from('orders').delete().eq('id', id);
+        if (error) throw error;
+        toast('Silindi');
+        await refresh();
+      } catch (e) { toast('Hata: ' + (e.message || e)); }
+    }
+
+    function openOrderModal(orderId) {
       if (!state.designs.length) { toast('Önce bir tasarım ekle'); return; }
-      const today = new Date().toISOString().slice(0, 10);
-      const opts = state.designs.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
+      const editOrder = orderId ? state.orders.find((x) => String(x.id) === String(orderId)) : null;
+      const today = todayStr();
+      const designOpts = state.designs.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
+
       openModal(`
-        <h2>Yeni Satış</h2>
+        <h2>${editOrder ? 'Siparişi Düzenle' : 'Yeni Sipariş'}</h2>
         <div class="grid">
-          <div class="field"><label for="s_design">Tasarım</label><select id="s_design">${opts}</select></div>
-          <div class="field"><label for="s_qty">Adet</label><input id="s_qty" type="number" min="1" step="1" inputmode="numeric" value="1"></div>
-          <div class="field"><label for="s_amount">Tutar (toplam, TL)</label><input id="s_amount" type="number" min="0" step="1" inputmode="decimal"></div>
-          <div class="field"><label for="s_customer">Müşteri (opsiyonel)</label><input id="s_customer" type="text" placeholder="İsim"></div>
-          <div class="field"><label for="s_date">Tarih</label><input id="s_date" type="date" value="${today}"></div>
+          <div class="field"><label for="o_customer">Müşteri adı</label><input id="o_customer" type="text" placeholder="İsim" value="${editOrder ? esc(editOrder.customer_name || '') : ''}"></div>
+          <div class="field"><label for="o_no">Sipariş no (opsiyonel)</label><input id="o_no" type="text" placeholder="Örn. SP-1024" value="${editOrder ? esc(editOrder.order_no || '') : ''}"></div>
+          <div class="button-row">
+            <div class="field"><label for="o_date">Sipariş tarihi</label><input id="o_date" type="date" value="${editOrder ? esc((editOrder.ordered_at || '').slice(0, 10)) : today}"></div>
+            <div class="field"><label for="o_due">Teslim (opsiyonel)</label><input id="o_due" type="date" value="${editOrder && editOrder.due_date ? esc(editOrder.due_date.slice(0, 10)) : ''}"></div>
+          </div>
+          <div class="field"><label for="o_notes">Not (opsiyonel)</label><input id="o_notes" type="text" placeholder="Not" value="${editOrder ? esc(editOrder.notes || '') : ''}"></div>
+          <div class="field">
+            <label>Ürün kalemleri</label>
+            <div id="o_items"></div>
+            <button class="button small" id="o_additem" type="button" style="margin-top:8px;">+ Ürün ekle</button>
+          </div>
+          ${editOrder && editOrder.stock_deducted ? '<div class="value-label" style="font-size:0.84rem;color:var(--coral);">Bu sipariş stoktan düşülmüş. Kaydedince stok iade edilir, sipariş tekrar sıraya alınır; “Baskı Bitti”ye alınca güncel miktar düşer.</div>' : ''}
         </div>
         <div class="button-row" style="margin-top:18px;">
-          <button class="button" id="s_cancel">İptal</button>
-          <button class="button primary" id="s_save">Kaydet</button>
+          <button class="button" id="o_cancel">İptal</button>
+          <button class="button primary" id="o_save">Kaydet</button>
         </div>
       `);
 
-      const autofill = () => {
-        const d = state.designs.find((x) => String(x.id) === String($('s_design').value));
-        const qty = Math.max(1, Number($('s_qty').value) || 1);
-        if (d) $('s_amount').value = round10(costOf(d).unitPrice * qty);
-      };
-      let amountTouched = false;
-      $('s_amount').addEventListener('input', () => { amountTouched = true; });
-      $('s_design').addEventListener('change', () => { if (!amountTouched) autofill(); });
-      $('s_qty').addEventListener('input', () => { if (!amountTouched) autofill(); });
-      autofill();
+      const itemsHost = $('o_items');
+      const touched = {};
+      let rowSeq = 0;
 
-      $('s_cancel').addEventListener('click', closeModal);
-      $('s_save').addEventListener('click', async () => {
-        const payload = {
-          design_id: $('s_design').value,
-          quantity: Math.max(1, Number($('s_qty').value) || 1),
-          sale_amount: Number($('s_amount').value) || 0,
-          customer: $('s_customer').value.trim() || null,
-          sold_at: $('s_date').value || today
+      function addRow(init) {
+        const rid = 'oi_' + (rowSeq++);
+        const row = document.createElement('div');
+        row.className = 'oitem-row';
+        row.dataset.rid = rid;
+        row.innerHTML = `
+          <select class="oi-design">${designOpts}</select>
+          <select class="oi-variant" aria-label="Varyant"></select>
+          <input class="oi-qty" type="number" min="1" step="1" value="1" inputmode="numeric" aria-label="Adet">
+          <input class="oi-price" type="number" min="0" step="1" inputmode="decimal" aria-label="Birim fiyat">
+          <button class="mini-btn danger oi-del" type="button" aria-label="Kaldır">×</button>
+        `;
+        itemsHost.appendChild(row);
+        const designSel = row.querySelector('.oi-design');
+        const variantSel = row.querySelector('.oi-variant');
+        const qtyInp = row.querySelector('.oi-qty');
+        const priceInp = row.querySelector('.oi-price');
+        const populateVariants = () => {
+          const d = state.designs.find((x) => String(x.id) === String(designSel.value));
+          const vs = d ? (d.variants || []) : [];
+          variantSel.innerHTML = vs.length
+            ? vs.map((v) => `<option value="${v.id}">${esc(v.name || '—')}</option>`).join('')
+            : '<option value="">— varyant yok —</option>';
         };
-        await withSaving('s_save', async () => {
-          const { error } = await sb.from('sales').insert(payload);
-          if (error) throw error;
+        const fillPrice = () => {
+          const d = state.designs.find((x) => String(x.id) === String(designSel.value));
+          const v = d ? (d.variants || []).find((x) => String(x.id) === String(variantSel.value)) : null;
+          if (v) priceInp.value = variantPrice(v);
+        };
+        priceInp.addEventListener('input', () => { touched[rid] = true; });
+        designSel.addEventListener('change', () => { populateVariants(); if (!touched[rid]) fillPrice(); });
+        variantSel.addEventListener('change', () => { if (!touched[rid]) fillPrice(); });
+
+        if (init) {
+          designSel.value = init.design_id;
+          populateVariants();
+          if (init.variant_id) variantSel.value = init.variant_id;
+          qtyInp.value = Math.max(1, Number(init.quantity) || 1);
+          priceInp.value = Number(init.unit_price) || 0;
+          touched[rid] = true; // mevcut fiyatı koru
+        } else {
+          populateVariants();
+          fillPrice();
+        }
+
+        row.querySelector('.oi-del').addEventListener('click', () => {
+          if (itemsHost.children.length > 1) row.remove();
+          else toast('En az bir kalem gerekli');
+        });
+      }
+
+      if (editOrder && (editOrder.order_items || []).length) {
+        editOrder.order_items.forEach((it) => addRow({ design_id: it.design_id, variant_id: it.variant_id, quantity: it.quantity, unit_price: it.unit_price }));
+      } else {
+        addRow();
+      }
+
+      $('o_additem').addEventListener('click', () => addRow());
+      $('o_cancel').addEventListener('click', closeModal);
+      $('o_save').addEventListener('click', async () => {
+        const customer = $('o_customer').value.trim();
+        if (!customer) { toast('Müşteri adı gerekli'); return; }
+        const items = [...itemsHost.querySelectorAll('.oitem-row')].map((r) => ({
+          design_id: r.querySelector('.oi-design').value,
+          variant_id: r.querySelector('.oi-variant').value || null,
+          quantity: Math.max(1, Number(r.querySelector('.oi-qty').value) || 1),
+          unit_price: Number(r.querySelector('.oi-price').value) || 0
+        })).filter((it) => it.design_id && it.variant_id);
+        if (!items.length) { toast('En az bir ürün kalemi (varyant) seç'); return; }
+
+        const header = {
+          customer_name: customer,
+          order_no: $('o_no').value.trim() || null,
+          ordered_at: $('o_date').value || today,
+          due_date: $('o_due').value || null,
+          notes: $('o_notes').value.trim() || null
+        };
+
+        await withSaving('o_save', async () => {
+          if (editOrder) {
+            let resetStock = false;
+            // Stok tutarlılığı: zaten düşülmüşse önce eski kalemlerin stoğunu iade et
+            if (editOrder.stock_deducted) {
+              await applyStockChange(editOrder, 1);
+              resetStock = true;
+            }
+            const update = { ...header };
+            if (resetStock) {
+              update.stock_deducted = false;
+              update.status = 'sirada';
+              const maxQ = state.orders.filter((o) => o.status === 'sirada' && String(o.id) !== String(editOrder.id)).reduce((m, o) => Math.max(m, Number(o.queue_position) || 0), 0);
+              update.queue_position = maxQ + 1;
+            }
+            const { error } = await sb.from('orders').update(update).eq('id', editOrder.id);
+            if (error) throw error;
+            const { error: dErr } = await sb.from('order_items').delete().eq('order_id', editOrder.id);
+            if (dErr) throw dErr;
+            const payload = items.map((it) => ({ ...it, order_id: editOrder.id }));
+            const { error: iErr } = await sb.from('order_items').insert(payload);
+            if (iErr) throw iErr;
+            closeModal();
+            toast(resetStock ? 'Güncellendi — stok iade edildi, sipariş tekrar sıraya alındı' : 'Güncellendi');
+            await refresh();
+          } else {
+            const maxQ = state.orders.filter((o) => o.status === 'sirada').reduce((m, o) => Math.max(m, Number(o.queue_position) || 0), 0);
+            const { data, error } = await sb.from('orders').insert({
+              ...header,
+              status: 'sirada',
+              queue_position: maxQ + 1
+            }).select().single();
+            if (error) throw error;
+            const payload = items.map((it) => ({ ...it, order_id: data.id }));
+            const { error: e2 } = await sb.from('order_items').insert(payload);
+            if (e2) throw e2;
+            closeModal();
+            toast('Sipariş eklendi');
+            await refresh();
+          }
+        });
+      });
+    }
+
+    // ===== FİLAMENTLER (stok + projeksiyon) =====
+    // Bekleyen kullanım: 'baski_bitti' olmamış (sirada/basiliyor) ve stok düşülmemiş siparişlerin
+    // bu renkten yiyeceği toplam gram. Renk eşleşmesi variant_filaments.color üzerinden.
+    function pendingUsageByColor() {
+      const map = {};
+      (state.orders || []).forEach((o) => {
+        if (o.stock_deducted) return;
+        if (o.status !== 'sirada' && o.status !== 'basiliyor') return;
+        (o.order_items || []).forEach((it) => {
+          const qty = Number(it.quantity) || 0;
+          const v = it.variants;
+          if (!v) return;
+          (v.variant_filaments || []).forEach((vf) => {
+            if (!vf.color) return;
+            map[vf.color] = (map[vf.color] || 0) + qty * (Number(vf.grams) || 0);
+          });
+        });
+      });
+      return map;
+    }
+
+    function renderFilaments() {
+      const fils = (state.filaments || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      const pending = pendingUsageByColor();
+
+      const critical = [], low = [];
+      const enriched = fils.map((f) => {
+        const have = Number(f.grams_remaining) || 0;
+        const pend = pending[f.color] || 0;
+        const proj = have - pend;
+        const thr = Number(f.low_threshold) || 0;
+        const isCrit = proj < 0;
+        const isLow = !isCrit && (have < thr || proj < thr);
+        const row = { f, have, pend, proj, thr, isCrit, isLow };
+        if (isCrit) critical.push(row);
+        else if (isLow) low.push(row);
+        return row;
+      });
+
+      // Özet şeridi
+      if (!fils.length) {
+        $('filSummary').innerHTML = '<span class="fs-ok">Henüz filament yok. “+ Filament” ile ekle.</span>';
+      } else if (!critical.length && !low.length) {
+        $('filSummary').innerHTML = '<span class="fs-ok">Tüm filamentler yeterli ✓</span>';
+      } else {
+        const critHtml = critical.map((x) =>
+          `<div class="fil-alert crit">⛔ ${esc(x.f.color || x.f.name)} yetersiz: kuyruk ${fmtNum(x.pend, 0)}g istiyor, ${fmtNum(x.have, 0)}g var, ${fmtNum(-x.proj, 0)}g eksik. Makara al.</div>`
+        ).join('');
+        const lowHtml = low.map((x) =>
+          `<div class="fil-alert warn">⚠️ ${esc(x.f.color || x.f.name)} azalıyor: ${fmtNum(x.have, 0)}g var${x.pend ? `, ${fmtNum(x.pend, 0)}g bekliyor` : ''} (kalınca ${fmtNum(x.proj, 0)}g).</div>`
+        ).join('');
+        $('filSummary').innerHTML = critHtml + lowHtml;
+      }
+
+      // Liste
+      const host = $('filamentsList');
+      if (!fils.length) {
+        host.innerHTML = '';
+        return;
+      }
+      host.innerHTML = '<ul class="list">' + enriched.map((x) => {
+        const cls = x.isCrit ? 'crit' : (x.isLow ? 'warn' : '');
+        return `<li class="list-item fil-item ${cls}">
+          <div class="li-head"><span class="li-title">${esc(x.f.name || '—')} <span class="fil-chip">${esc(x.f.color || '—')}</span></span><span class="li-amount">${fmtNum(x.have, 0)}g</span></div>
+          <div class="fil-stats">Mevcut: ${fmtNum(x.have, 0)}g · Bekleyen: ${fmtNum(x.pend, 0)}g · Kalınca: <span class="${x.proj < 0 ? 'neg' : 'pos'}">${fmtNum(x.proj, 0)}g</span></div>
+          <div class="fil-thr">Azalma eşiği: ${fmtNum(x.thr, 0)}g</div>
+          <div class="li-actions">
+            <button class="button small" data-addstock="${x.f.id}">+ Stok</button>
+            <button class="button small" data-editfil="${x.f.id}">Düzenle</button>
+            <button class="button small danger" data-delfil="${x.f.id}">Sil</button>
+          </div>
+        </li>`;
+      }).join('') + '</ul>';
+
+      host.querySelectorAll('[data-addstock]').forEach((b) => b.addEventListener('click', () => openAddStockModal(b.getAttribute('data-addstock'))));
+      host.querySelectorAll('[data-editfil]').forEach((b) => b.addEventListener('click', () => openFilamentModal(b.getAttribute('data-editfil'))));
+      host.querySelectorAll('[data-delfil]').forEach((b) => b.addEventListener('click', () => deleteFilament(b.getAttribute('data-delfil'))));
+    }
+
+    function openFilamentModal(id) {
+      const f = id ? state.filaments.find((x) => String(x.id) === String(id)) : null;
+      const colorVals = [...new Set((state.filaments || []).map((x) => x.color).filter(Boolean))];
+      const colorList = colorVals.map((c) => `<option value="${esc(c)}"></option>`).join('');
+      openModal(`
+        <h2>${f ? 'Filamenti Düzenle' : 'Yeni Filament'}</h2>
+        <div class="grid">
+          <div class="field"><label for="f_name">Ad</label><input id="f_name" type="text" value="${f ? esc(f.name) : ''}" placeholder="ör. PLA Mat"></div>
+          <div class="field"><label for="f_color">Renk</label><input id="f_color" type="text" value="${f ? esc(f.color || '') : ''}" placeholder="ör. Siyah" list="f_colorlist"><datalist id="f_colorlist">${colorList}</datalist></div>
+          ${f ? '' : '<div class="field"><label for="f_grams">Başlangıç stok (gram)</label><input id="f_grams" type="number" min="0" step="1" inputmode="decimal" value="0"></div>'}
+          <div class="field"><label for="f_threshold">Azalma eşiği (gram)</label><input id="f_threshold" type="number" min="0" step="1" inputmode="decimal" value="${f ? esc(f.low_threshold) : '200'}"></div>
+        </div>
+        <div class="button-row" style="margin-top:18px;">
+          <button class="button" id="f_cancel">İptal</button>
+          <button class="button primary" id="f_save">Kaydet</button>
+        </div>
+      `);
+      $('f_cancel').addEventListener('click', closeModal);
+      $('f_save').addEventListener('click', async () => {
+        const name = $('f_name').value.trim();
+        const color = $('f_color').value.trim();
+        if (!name) { toast('Ad gerekli'); return; }
+        if (!color) { toast('Renk gerekli'); return; }
+        const low_threshold = Math.max(0, Number($('f_threshold').value) || 0);
+        await withSaving('f_save', async () => {
+          if (f) {
+            const { error } = await sb.from('filaments').update({ name, color, low_threshold }).eq('id', f.id);
+            if (error) throw error;
+          } else {
+            const grams_remaining = Math.max(0, Number($('f_grams').value) || 0);
+            const { error } = await sb.from('filaments').insert({ name, color, grams_remaining, low_threshold });
+            if (error) throw error;
+          }
           closeModal();
-          toast('Satış eklendi');
+          toast('Kaydedildi');
           await refresh();
         });
       });
     }
 
-    async function deleteSale(id) {
-      if (!confirm('Bu satış silinsin mi?')) return;
+    function openAddStockModal(id) {
+      const f = state.filaments.find((x) => String(x.id) === String(id));
+      if (!f) return;
+      openModal(`
+        <h2>Stok Ekle — ${esc(f.name)}</h2>
+        <div class="grid">
+          <div class="field"><label for="as_grams">Eklenecek gram (yeni makara)</label><input id="as_grams" type="number" min="0" step="1" inputmode="decimal" value="1000"></div>
+          <div class="value-label" style="font-size:0.85rem;">Mevcut: ${fmtNum(Number(f.grams_remaining) || 0, 0)}g</div>
+        </div>
+        <div class="button-row" style="margin-top:18px;">
+          <button class="button" id="as_cancel">İptal</button>
+          <button class="button primary" id="as_save">Ekle</button>
+        </div>
+      `);
+      $('as_cancel').addEventListener('click', closeModal);
+      $('as_save').addEventListener('click', async () => {
+        const add = Number($('as_grams').value) || 0;
+        if (add <= 0) { toast('Geçerli bir gram gir'); return; }
+        await withSaving('as_save', async () => {
+          const next = (Number(f.grams_remaining) || 0) + add;
+          const { error } = await sb.from('filaments').update({ grams_remaining: next }).eq('id', f.id);
+          if (error) throw error;
+          closeModal();
+          toast('Stok eklendi');
+          await refresh();
+        });
+      });
+    }
+
+    async function deleteFilament(id) {
+      const f = state.filaments.find((x) => String(x.id) === String(id));
+      if (!confirm(`“${f ? f.name : 'Filament'}” silinsin mi?`)) return;
       try {
-        const { error } = await sb.from('sales').delete().eq('id', id);
+        const { error } = await sb.from('filaments').delete().eq('id', id);
         if (error) throw error;
         toast('Silindi');
         await refresh();
@@ -868,7 +1519,7 @@
     // ===== Görünüm yönetimi =====
     function showView(view) {
       state.view = view;
-      ['summary', 'calc', 'designs', 'sales', 'settings'].forEach((v) => {
+      ['summary', 'orders', 'calc', 'designs', 'filaments', 'settings'].forEach((v) => {
         $('view-' + v).hidden = v !== view;
       });
       document.querySelectorAll('#tabs .tab').forEach((t) => t.classList.toggle('active', t.getAttribute('data-view') === view));
@@ -876,8 +1527,9 @@
 
     function renderAll() {
       renderSummary();
+      renderOrders();
       renderDesigns();
-      renderSales();
+      renderFilaments();
       fillSettingsForm();
       fillCalcDefaults();
       calcCompute();
@@ -907,8 +1559,9 @@
         renderSummary();
       }));
 
+      $('addOrderBtn').addEventListener('click', () => openOrderModal());
       $('addDesignBtn').addEventListener('click', () => openDesignModal(null));
-      $('addSaleBtn').addEventListener('click', openSaleModal);
+      $('addFilamentBtn').addEventListener('click', () => openFilamentModal(null));
       $('saveSettingsBtn').addEventListener('click', saveSettings);
 
       bindCalc();
