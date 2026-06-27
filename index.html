@@ -84,6 +84,27 @@
     .stat.featured .stat-title { color: rgba(255,255,255,0.6); }
     .stat.featured .stat-chip { background: rgba(255,255,255,0.12); }
     .stat.featured .stat-value { font-size: 2rem; }
+    .stat.danger .stat-value { color: var(--danger); }
+    .stat-value.small { font-size: 1.15rem; }
+
+    /* Özet düzeni (mobil varsayılan: tek sütun akış) */
+    .summary-left { display: grid; gap: 16px; }
+    .summary-left .panel + .panel { margin-top: 0; }
+    .summary-right { margin-top: 16px; }
+
+    /* Üst uyarı şeridi */
+    .sum-alert { display: grid; gap: 8px; margin-bottom: 16px; }
+    .sum-alert[hidden] { display: none; }
+    .sum-alert .sa { padding: 12px 16px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; box-shadow: var(--shadow); }
+    .sum-alert .sa.crit { background: rgba(255,59,48,0.10); color: var(--danger); }
+    .sum-alert .sa.warn { background: rgba(255,122,101,0.12); color: var(--coral); }
+    .sum-alert .sa.info { background: rgba(28,28,30,0.06); color: var(--text); }
+
+    /* Yaklaşan teslimler */
+    .up-tag { font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+    .up-tag.overdue { background: rgba(178,34,34,0.14); color: #B22222; }
+    .up-tag.today { background: rgba(255,122,26,0.16); color: #c85a00; }
+    .up-tag.soon { background: rgba(242,194,0,0.22); color: #8a6d00; }
 
     /* Listeler */
     .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
@@ -147,14 +168,18 @@
     .kempty { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 14px 4px; }
 
     .ocard { background: var(--card); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); display: grid; gap: 8px; }
-    .ocard.overdue { border: 1.5px solid var(--danger); background: rgba(255,59,48,0.05); }
+    .ocard.overdue, .ocard.due-overdue { border: 1.5px solid #B22222; background: rgba(178,34,34,0.08); }
+    .ocard.due-today { border: 1.5px solid #FF7A1A; background: rgba(255,122,26,0.09); }
+    .ocard.due-soon { border: 1.5px solid #F2C200; background: rgba(242,194,0,0.12); }
     .ocard-name { font-weight: 700; font-size: 1rem; }
     .ocard-no { color: var(--muted); font-weight: 600; font-size: 0.82rem; }
     .ocard-items { color: var(--muted); font-size: 0.86rem; line-height: 1.4; }
     .ocard-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
     .ocard-total { font-weight: 800; color: var(--coral); }
     .ocard-due { font-size: 0.82rem; color: var(--muted); }
-    .ocard.overdue .ocard-due { color: var(--danger); font-weight: 700; }
+    .ocard.overdue .ocard-due, .ocard.due-overdue .ocard-due { color: #B22222; font-weight: 700; }
+    .ocard.due-today .ocard-due { color: #FF7A1A; font-weight: 700; }
+    .ocard.due-soon .ocard-due { color: #8a6d00; font-weight: 600; }
     .ocard-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
     .mini-btn { border: 1.5px solid var(--border); background: #fff; color: var(--text); padding: 7px 11px; border-radius: 999px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: box-shadow 0.2s, background 0.2s; }
@@ -247,14 +272,11 @@
       .toast { left: auto; right: 28px; bottom: 28px; transform: none; }
       .toast.show { transform: translateY(-6px); }
 
-      /* Özet: kartlar solda, grafik sağda — tek ekran (yalnızca Özet aktifken) */
-      #view-summary:not([hidden]) { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: start; }
-      #view-summary > * { margin-top: 0; }
-      #view-summary .greeting { grid-column: 1 / -1; }
-      #view-summary .summary-overview { grid-column: 1; grid-row: 2; }
-      #view-summary .summary-chart { grid-column: 2; grid-row: 2 / span 2; }
-      #view-summary .summary-top { grid-column: 1; grid-row: 3; }
-      .summary-chart .chart-wrap { height: 340px; }
+      /* Özet: sol sütunda paneller, sağda grafik */
+      .summary-main { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: start; }
+      .summary-right { margin-top: 0; }
+      .summary-chart { position: sticky; top: 16px; }
+      .summary-chart .chart-wrap { height: 360px; }
 
       /* Özet kartları: 3'lü grid, kompakt */
       .stat-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -312,31 +334,49 @@
         <p class="greet-sub">Bugünkü üretim ve kazancının özeti.</p>
       </div>
 
-      <div class="panel summary-overview">
-        <div class="section-title">
-          <span>Genel Bakış</span>
-          <div class="seg" id="periodSeg">
-            <button data-period="week" class="active">Bu Hafta</button>
-            <button data-period="month">Bu Ay</button>
+      <div class="sum-alert" id="sumAlert" hidden></div>
+
+      <div class="summary-main">
+        <div class="summary-left">
+          <div class="panel summary-ops">
+            <div class="section-title"><span>Operasyon</span></div>
+            <div id="opsStats"></div>
+          </div>
+
+          <div class="panel summary-upcoming" id="upcomingPanel" hidden>
+            <div class="section-title"><span>Yaklaşan Teslimler</span></div>
+            <div id="upcomingList"></div>
+          </div>
+
+          <div class="panel summary-overview">
+            <div class="section-title">
+              <span>Genel Bakış</span>
+              <div class="seg" id="periodSeg">
+                <button data-period="week" class="active">Bu Hafta</button>
+                <button data-period="month">Bu Ay</button>
+              </div>
+            </div>
+            <div id="summaryStats"></div>
+          </div>
+
+          <div class="panel summary-top">
+            <div class="section-title"><span>En Çok Satılan Tasarımlar</span></div>
+            <div id="topDesigns"></div>
           </div>
         </div>
-        <div id="summaryStats"></div>
-      </div>
 
-      <div class="panel summary-chart">
-        <div class="section-title">
-          <span>Üretim Grafiği</span>
-          <div class="seg" id="metricSeg">
-            <button data-metric="units" class="active">Adet</button>
-            <button data-metric="revenue">Ciro</button>
+        <div class="summary-right">
+          <div class="panel summary-chart">
+            <div class="section-title">
+              <span>Üretim Grafiği</span>
+              <div class="seg" id="metricSeg">
+                <button data-metric="units" class="active">Adet</button>
+                <button data-metric="revenue">Ciro</button>
+              </div>
+            </div>
+            <div class="chart-wrap"><canvas id="prodChart"></canvas></div>
           </div>
         </div>
-        <div class="chart-wrap"><canvas id="prodChart"></canvas></div>
-      </div>
-
-      <div class="panel summary-top">
-        <div class="section-title"><span>En Çok Satılan Tasarımlar</span></div>
-        <div id="topDesigns"></div>
       </div>
     </section>
 
@@ -707,7 +747,81 @@
         ).join('') + '</ul>';
       }
 
+      renderOperations(inRange.length);
       renderChart(chartData, start, end);
+    }
+
+    // Operasyon kartları + üst uyarı şeridi + yaklaşan teslimler
+    function renderOperations(completedInPeriod) {
+      const orders = state.orders || [];
+      const activeStatuses = ['sirada', 'basiliyor', 'baski_bitti', 'hazir'];
+      const pendingCount = orders.filter((o) => activeStatuses.includes(o.status)).length;
+      const printing = orders.find((o) => o.status === 'basiliyor');
+      const overdueOrders = orders.filter((o) => dueInfo(o).tier === 'overdue');
+      const dueTodayOrders = orders.filter((o) => dueInfo(o).tier === 'today');
+      const queueHours = orders
+        .filter((o) => o.status === 'sirada' || o.status === 'basiliyor')
+        .reduce((s, o) => s + orderHours(o), 0);
+
+      // Ort. teslim süresi: kargolandi + shipped_at olanlarda ordered_at → shipped_at gün farkı
+      const shipped = orders.filter((o) => o.status === 'kargolandi' && o.shipped_at && o.ordered_at);
+      let avgDays = null;
+      if (shipped.length) {
+        const sum = shipped.reduce((s, o) => {
+          const a = parseDateStr(o.ordered_at), b = parseDateStr(o.shipped_at);
+          return (a && b) ? s + Math.max(0, Math.round((b - a) / 86400000)) : s;
+        }, 0);
+        avgDays = sum / shipped.length;
+      }
+
+      const periodLabel = state.period === 'week' ? 'Bu Hafta' : 'Bu Ay';
+      const ops = [
+        { t: 'Bekleyen Sipariş', v: fmtNum(pendingCount), icon: '📦', chip: 'yellow' },
+        { t: 'Kuyruktaki İş', v: '~' + fmtNum(queueHours, 0) + ' s', icon: '⏱️', chip: 'coral' },
+        printing
+          ? { t: 'Şu An Basılıyor · ~' + fmtNum(orderHours(printing), 1) + ' s', v: esc(printing.customer_name || '—'), small: true, icon: '🖨️', chip: 'yellow' }
+          : { t: 'Şu An Basılıyor · boşta', v: '—', icon: '🖨️', chip: 'yellow' },
+        { t: periodLabel + ' Tamamlanan', v: fmtNum(completedInPeriod), icon: '✅', chip: 'coral' },
+        { t: 'Gecikmiş Sipariş', v: fmtNum(overdueOrders.length), icon: '⛔', chip: 'coral', danger: overdueOrders.length > 0 },
+        avgDays != null
+          ? { t: 'Ort. Teslim Süresi', v: fmtNum(avgDays, 1) + ' gün', icon: '📅', chip: 'yellow' }
+          : { t: 'Ort. Teslim · veri yok', v: '—', icon: '📅', chip: 'yellow' }
+      ];
+      $('opsStats').innerHTML = '<div class="stat-grid">' + ops.map((s) =>
+        `<div class="stat ${s.danger ? 'danger' : ''}">
+           <div class="stat-chip ${s.chip || ''}">${s.icon}</div>
+           <div class="stat-value ${s.small ? 'small' : ''}">${s.v}</div>
+           <div class="stat-title">${s.t}</div>
+         </div>`
+      ).join('') + '</div>';
+
+      // Üst uyarı şeridi
+      const alerts = [];
+      if (overdueOrders.length) alerts.push(`<span class="sa crit">⛔ ${fmtNum(overdueOrders.length)} sipariş gecikmiş</span>`);
+      const { crit, low } = filamentShortages();
+      if (crit.length) alerts.push(`<span class="sa crit">⚠️ ${esc(crit.join(', '))} yetersiz</span>`);
+      else if (low.length) alerts.push(`<span class="sa warn">⚠️ ${esc(low.join(', '))} azalıyor</span>`);
+      if (dueTodayOrders.length) alerts.push(`<span class="sa info">📦 Bugün ${fmtNum(dueTodayOrders.length)} teslim</span>`);
+      const alertEl = $('sumAlert');
+      if (alerts.length) { alertEl.hidden = false; alertEl.innerHTML = alerts.join(''); }
+      else { alertEl.hidden = true; alertEl.innerHTML = ''; }
+
+      // Yaklaşan teslimler (gecikmiş + bugün/yarın/yakın), tarih sıralı
+      const upcoming = orders
+        .filter((o) => ['overdue', 'today', 'soon'].includes(dueInfo(o).tier))
+        .sort((a, b) => (a.due_date || '').localeCompare(b.due_date || ''));
+      const upPanel = $('upcomingPanel');
+      if (!upcoming.length) {
+        upPanel.hidden = true;
+        $('upcomingList').innerHTML = '';
+      } else {
+        upPanel.hidden = false;
+        $('upcomingList').innerHTML = '<ul class="list">' + upcoming.map((o) => {
+          const di = dueInfo(o);
+          const stLabel = (STATUSES.find((s) => s[0] === o.status) || [null, o.status])[1];
+          return `<li class="list-item"><div class="li-head"><span class="li-title">${esc(o.customer_name || '—')}</span><span class="up-tag ${di.tier}">${esc(di.label || '')}</span></div><div class="li-sub"><span>${esc(o.due_date || '')}</span><span>${esc(stLabel)}</span></div></li>`;
+        }).join('') + '</ul>';
+      }
     }
 
     function renderChart(chartData, start, end) {
@@ -1013,6 +1127,25 @@
     function isOverdue(o) {
       return !!(o.due_date && o.due_date <= todayStr());
     }
+    // Teslim durumu (yalnızca tamamlanmamış siparişler): overdue / today / tomorrow / soon / none
+    function dueInfo(o) {
+      if (!o || o.status === 'kargolandi' || !o.due_date) return { tier: 'none' };
+      const due = parseDateStr(o.due_date);
+      if (!due) return { tier: 'none' };
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const days = Math.round((due - today) / 86400000);
+      if (days < 0) return { tier: 'overdue', days, label: `${-days} gün gecikti` };
+      if (days === 0) return { tier: 'today', days, label: 'bugün' };
+      if (days <= 5) return { tier: 'soon', days, label: days === 1 ? 'yarın' : `${days} gün kaldı` };
+      return { tier: 'none', days };
+    }
+    function dueCardClass(tier) {
+      if (tier === 'overdue') return 'due-overdue';
+      if (tier === 'today') return 'due-today';
+      if (tier === 'soon') return 'due-soon';
+      return '';
+    }
 
     function renderOrders() {
       const orders = state.orders || [];
@@ -1051,13 +1184,14 @@
       const idx = STATUSES.findIndex((s) => s[0] === st);
       const canBack = idx > 0;
       const canFwd = idx < STATUSES.length - 1;
-      const overdue = isOverdue(o);
-      const due = o.due_date ? `<span class="ocard-due">Teslim: ${esc(o.due_date)}</span>` : '';
+      const di = dueInfo(o);
+      const dueLabel = di.label ? ` · ${esc(di.label)}` : '';
+      const due = o.due_date ? `<span class="ocard-due">Teslim: ${esc(o.due_date)}${dueLabel}</span>` : '';
       const no = o.order_no ? ` <span class="ocard-no">#${esc(o.order_no)}</span>` : '';
       const queueArrows = st === 'sirada'
         ? `<button class="mini-btn" data-move="${o.id}" data-mdir="-1" ${i === 0 ? 'disabled' : ''}>↑</button><button class="mini-btn" data-move="${o.id}" data-mdir="1" ${i === count - 1 ? 'disabled' : ''}>↓</button>`
         : '';
-      return `<div class="ocard ${overdue ? 'overdue' : ''}">
+      return `<div class="ocard ${dueCardClass(di.tier)}">
         <div class="ocard-name">${esc(o.customer_name || '—')}${no}</div>
         <div class="ocard-items">${esc(orderItemsSummary(o))}</div>
         <div class="ocard-meta"><span class="ocard-total">${fmtTL(orderTotal(o))}</span>${due}</div>
@@ -1128,6 +1262,9 @@
           await applyStockChange(o, 1);
           update.stock_deducted = false;
         }
+        // Kargolanma tarihi: 'kargolandi'ye girişte bugünü yaz, çıkışta temizle (ort. teslim süresi için)
+        if (next === 'kargolandi') update.shipped_at = todayStr();
+        else if (o.status === 'kargolandi') update.shipped_at = null;
         const { error } = await sb.from('orders').update(update).eq('id', id);
         if (error) throw error;
         if (negatives.length) toast(`Stok düşüldü — ${negatives.join(', ')} eksiye düştü`);
@@ -1343,6 +1480,20 @@
       return map;
     }
 
+    // Özet uyarı şeridi için kritik/azalan filament renkleri
+    function filamentShortages() {
+      const pending = pendingUsageByColor();
+      const crit = [], low = [];
+      (state.filaments || []).forEach((f) => {
+        const have = Number(f.grams_remaining) || 0;
+        const proj = have - (pending[f.color] || 0);
+        const thr = Number(f.low_threshold) || 0;
+        if (proj < 0) crit.push(f.color || f.name);
+        else if (have < thr || proj < thr) low.push(f.color || f.name);
+      });
+      return { crit, low };
+    }
+
     function renderFilaments() {
       const fils = (state.filaments || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
       const pending = pendingUsageByColor();
@@ -1410,7 +1561,9 @@
         <div class="grid">
           <div class="field"><label for="f_name">Ad</label><input id="f_name" type="text" value="${f ? esc(f.name) : ''}" placeholder="ör. PLA Mat"></div>
           <div class="field"><label for="f_color">Renk</label><input id="f_color" type="text" value="${f ? esc(f.color || '') : ''}" placeholder="ör. Siyah" list="f_colorlist"><datalist id="f_colorlist">${colorList}</datalist></div>
-          ${f ? '' : '<div class="field"><label for="f_grams">Başlangıç stok (gram)</label><input id="f_grams" type="number" min="0" step="1" inputmode="decimal" value="0"></div>'}
+          ${f
+            ? `<div class="field"><label for="f_remaining">Kalan stok (gram)</label><input id="f_remaining" type="number" min="0" step="1" inputmode="decimal" value="${esc(f.grams_remaining)}"><span class="value-label" style="font-size:0.82rem;">Tam değeri elle düzelt (artır/azalt). Hızlı makara eklemek için “+ Stok” kullan.</span></div>`
+            : '<div class="field"><label for="f_grams">Başlangıç stok (gram)</label><input id="f_grams" type="number" min="0" step="1" inputmode="decimal" value="0"></div>'}
           <div class="field"><label for="f_threshold">Azalma eşiği (gram)</label><input id="f_threshold" type="number" min="0" step="1" inputmode="decimal" value="${f ? esc(f.low_threshold) : '200'}"></div>
         </div>
         <div class="button-row" style="margin-top:18px;">
@@ -1427,7 +1580,8 @@
         const low_threshold = Math.max(0, Number($('f_threshold').value) || 0);
         await withSaving('f_save', async () => {
           if (f) {
-            const { error } = await sb.from('filaments').update({ name, color, low_threshold }).eq('id', f.id);
+            const grams_remaining = Math.max(0, Number($('f_remaining').value) || 0); // negatif → 0
+            const { error } = await sb.from('filaments').update({ name, color, low_threshold, grams_remaining }).eq('id', f.id);
             if (error) throw error;
           } else {
             const grams_remaining = Math.max(0, Number($('f_grams').value) || 0);
