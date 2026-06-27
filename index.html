@@ -1764,8 +1764,24 @@
 
     // PWA / çevrimdışı: service worker kaydı (göreli yol — alt dizinde de çalışır)
     if ('serviceWorker' in navigator) {
+      let refreshing = false;
+      // Yeni SW kontrolü ele alınca sayfayı bir kez yenile (güncel sürüm görünsün)
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+        navigator.serviceWorker.register('service-worker.js').then((reg) => {
+          // Yeni bir SW bulununca takip et; SW install'da skipWaiting yaptığı için
+          // kurulup devreye girince yukarıdaki controllerchange tetiklenip sayfa yenilenir.
+          reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            if (nw) nw.addEventListener('statechange', () => { /* state: installing → installed → activating → activated */ });
+          });
+          // Açıkken periyodik güncelleme kontrolü (sekme uzun süre açık kalırsa)
+          reg.update && reg.update();
+        }).catch(() => {});
       });
     }
   })();
